@@ -7,18 +7,34 @@ export class PostProvider {
 
     async getAllPosts(): Promise<PostModel[]> {
         try {
-            const response = await fetch(`${this.baseURL}/posts`, {
+            const url = `${this.baseURL}/posts`;
+            console.log("Fetching posts from:", url);
+
+            const response = await fetch(url, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
                 },
             });
 
+            console.log("Response status:", response.status);
+            console.log("Response headers:", response.headers);
+
             if (!response.ok) {
-                throw new Error(`Erro ao buscar posts: ${response.statusText}`);
+                const errorText = await response.text();
+                console.error("Error response:", errorText);
+                throw new Error(`Erro ao buscar posts: ${response.status} - ${response.statusText}`);
+            }
+
+            const contentType = response.headers.get("content-type");
+            if (!contentType || !contentType.includes("application/json")) {
+                const text = await response.text();
+                console.error("Response is not JSON:", text.substring(0, 200));
+                throw new Error("A resposta da API não está em formato JSON");
             }
 
             const data = await response.json();
+            console.log("Posts recebidos:", data.length);
             return data.map((post: any) => new PostModel(post));
         } catch (error) {
             console.error("Erro ao buscar todos os posts:", error);
