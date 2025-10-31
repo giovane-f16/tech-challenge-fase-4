@@ -9,6 +9,8 @@ module.exports = defineConfig([
         rules: {
             'indent': ['error', 4],
             '@typescript-eslint/indent': ['error', 4],
+            'quotes': ['error', 'double'],
+            '@typescript-eslint/quotes': ['error', 'double'],
         },
     },
 ]);
