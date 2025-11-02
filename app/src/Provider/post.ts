@@ -1,5 +1,5 @@
-import { Post, PostModel } from "../model/post";
-import { Config } from "../Config/config";
+import { Post, PostModel } from "@/app/src/Model/post";
+import { Config } from "@/app/src/Config/config";
 
 export class PostProvider {
     private baseURL: string = Config.getApiEndpoint();
@@ -34,7 +34,6 @@ export class PostProvider {
             }
 
             const data = await response.json();
-            console.log("Posts recebidos:", data.length);
             return data.map((post: any) => new PostModel(post));
         } catch (error) {
             console.error("Erro ao buscar todos os posts:", error);

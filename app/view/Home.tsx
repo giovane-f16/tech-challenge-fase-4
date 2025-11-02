@@ -11,7 +11,7 @@ import {
     StatusBar,
 } from "react-native";
 import { HomeController } from "@/app/src/Controller/home";
-import { PostModel } from "@/app/src/model/post";
+import { PostModel } from "@/app/src/Model/post";
 
 export default function Home() {
     const [posts, setPosts] = useState<PostModel[]>([]);
