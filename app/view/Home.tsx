@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, Image, StyleSheet, ActivityIndicator, RefreshControl, TouchableOpacity, StatusBar } from "react-native";
+import { useRouter, Href } from "expo-router";
 import { HomeController } from "@/app/src/Controller/home";
 import { PostProvider } from "@/app/src/Provider/post";
 import { PostModel } from "@/app/src/Model/post";
 
 export default function Home() {
+    const router = useRouter();
     const [posts, setPosts] = useState<PostModel[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -36,17 +38,12 @@ export default function Home() {
         loadPosts();
     };
 
-    const formatDate = (date: Date) => {
-        const d = new Date(date);
-        return d.toLocaleDateString("pt-BR", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric",
-        });
-    };
-
     const renderPostItem = ({ item }: { item: PostModel }) => (
-        <TouchableOpacity style={styles.postCard} activeOpacity={0.7}>
+        <TouchableOpacity
+            style={styles.postCard}
+            activeOpacity={0.7}
+            onPress={() => router.push(`view/post/${item.getId()}` as Href)}
+        >
             <Image
                 source={{ uri: item.getThumbnail() }}
                 style={styles.thumbnail}
@@ -65,7 +62,7 @@ export default function Home() {
                         <Text style={styles.authorName}>{item.getAutor()}</Text>
                     </View>
                     <Text style={styles.postDate}>
-                        {formatDate(item.getDataCriacao())}
+                        {postProvider.formatDate(item.getDataCriacao())}
                     </Text>
                 </View>
             </View>
