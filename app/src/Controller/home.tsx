@@ -1,5 +1,5 @@
-import { PostProvider } from "@/app/src/Provider/post";
 import { PostModel } from "@/app/src/Model/post";
+import { PostProvider } from "@/app/src/Provider/post";
 
 export class HomeController {
     private postProvider: PostProvider;
@@ -18,3 +18,5 @@ export class HomeController {
         }
     }
 }
+
+export default HomeController;

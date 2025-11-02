@@ -67,3 +67,5 @@ export class PostModel implements Post {
         };
     }
 }
+
+export default PostModel;

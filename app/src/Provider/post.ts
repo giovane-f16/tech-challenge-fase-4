@@ -1,5 +1,5 @@
-import { Post, PostModel } from "@/app/src/Model/post";
 import { Config } from "@/app/src/Config/config";
+import { Post, PostModel } from "@/app/src/Model/post";
 
 export class PostProvider {
     private baseURL: string = Config.getApiEndpoint();
@@ -188,3 +188,5 @@ export class PostProvider {
         });
     };
 }
+
+export default PostProvider;
