@@ -1,16 +1,7 @@
 import React, { useEffect, useState } from "react";
-import {
-    View,
-    Text,
-    FlatList,
-    Image,
-    StyleSheet,
-    ActivityIndicator,
-    RefreshControl,
-    TouchableOpacity,
-    StatusBar,
-} from "react-native";
+import { View, Text, FlatList, Image, StyleSheet, ActivityIndicator, RefreshControl, TouchableOpacity, StatusBar } from "react-native";
 import { HomeController } from "@/app/src/Controller/home";
+import { PostProvider } from "@/app/src/Provider/post";
 import { PostModel } from "@/app/src/Model/post";
 
 export default function Home() {
@@ -19,7 +10,8 @@ export default function Home() {
     const [refreshing, setRefreshing] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
-    const homeController = new HomeController();
+    const postProvider   = new PostProvider();
+    const homeController = new HomeController(postProvider);
 
     const loadPosts = async () => {
         try {

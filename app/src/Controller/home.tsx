@@ -4,8 +4,8 @@ import { PostModel } from "@/app/src/Model/post";
 export class HomeController {
     private postProvider: PostProvider;
 
-    constructor() {
-        this.postProvider = new PostProvider();
+    constructor(postProvider: PostProvider) {
+        this.postProvider = postProvider;
     }
 
     async getHomeData(): Promise<PostModel[]> {
