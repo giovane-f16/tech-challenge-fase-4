@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, Image, StyleSheet, ActivityIndicator, RefreshControl, TouchableOpacity, StatusBar } from "react-native";
-import { useRouter, Href } from "expo-router";
 import { HomeController } from "@/app/src/Controller/home";
-import { PostProvider } from "@/app/src/Provider/post";
 import { PostModel } from "@/app/src/Model/post";
+import { PostProvider } from "@/app/src/Provider/post";
+import { Href, useRouter } from "expo-router";
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, FlatList, Image, RefreshControl, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function Home() {
     const router = useRouter();
@@ -54,7 +54,7 @@ export default function Home() {
                     {item.getTitulo()}
                 </Text>
                 <Text style={styles.postExcerpt} numberOfLines={3}>
-                    {item.getConteudo()}
+                    {item.getConteudoResumido(50)}
                 </Text>
                 <View style={styles.postFooter}>
                     <View style={styles.authorContainer}>

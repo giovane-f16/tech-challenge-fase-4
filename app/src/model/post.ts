@@ -66,6 +66,13 @@ export class PostModel implements Post {
             data_atualizacao: this.data_atualizacao,
         };
     }
+
+    getConteudoResumido(lenght: number): string {
+        if (this.conteudo.length <= lenght) {
+            return this.conteudo;
+        }
+        return this.conteudo.substring(0, lenght) + "...";
+    }
 }
 
 export default PostModel;
