@@ -88,13 +88,6 @@ export default function PostDetails() {
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.scrollContent}
             >
-                <TouchableOpacity
-                    style={styles.backButton}
-                    onPress={() => router.back()}
-                >
-                    <Text style={styles.backButtonText}>← Voltar</Text>
-                </TouchableOpacity>
-
                 <Image
                     source={{ uri: post.getThumbnail() }}
                     style={styles.thumbnail}
