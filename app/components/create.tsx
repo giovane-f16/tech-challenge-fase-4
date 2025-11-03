@@ -1,7 +1,7 @@
 import { Href, useRouter } from "expo-router";
 import { Text, TouchableOpacity } from "react-native";
 
-function NewPostButton() {
+const createPostButton = () => {
   const router = useRouter();
 
   return (
@@ -22,5 +22,4 @@ function NewPostButton() {
   );
 }
 
-export { NewPostButton };
-
+export default createPostButton;

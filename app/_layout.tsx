@@ -1,4 +1,4 @@
-import { NewPostButton } from "@/app/components/create";
+import CreatePostButton from "@/app/components/create";
 import { Stack } from "expo-router";
 
 export default function RootLayout() {
@@ -18,7 +18,7 @@ export default function RootLayout() {
         name="index"
         options={{
           title: "Blogging",
-          headerRight: () => <NewPostButton />
+          headerRight: () => <CreatePostButton />
         }}
       />
       <Stack.Screen
