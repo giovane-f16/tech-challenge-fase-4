@@ -8,6 +8,13 @@ export interface Post {
     data_atualizacao?: Date;
 }
 
+export interface PostCreate {
+    titulo: string;
+    conteudo: string;
+    autor: string;
+    thumbnail: string;
+}
+
 export class PostModel implements Post {
     _id: string;
     titulo: string;

@@ -1,5 +1,5 @@
 import { Config } from "@/app/src/Config/config";
-import { Post, PostModel } from "@/app/src/Model/post";
+import { Post, PostCreate, PostModel } from "@/app/src/Model/post";
 
 export class PostProvider {
     private baseURL: string = Config.getApiEndpoint();
@@ -113,7 +113,7 @@ export class PostProvider {
         }
     }
 
-    async createPost(postData: Post): Promise<PostModel> {
+    async createPost(postData: PostCreate): Promise<PostModel> {
         try {
             const response = await fetch(`${this.baseURL}/posts`, {
                 method: "POST",

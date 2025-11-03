@@ -1,15 +1,18 @@
+import PostModel from "@/app/src/Model/post";
+import { PostProvider } from "@/app/src/Provider/post";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { ActivityIndicator, Alert, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function CreatePost() {
     const router = useRouter();
+    const postProvider = new PostProvider();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         titulo: "",
         conteudo: "",
         autor: "",
-        thumbnail: "",
+        thumbnail: "", // @toDo: ver como foi tratado na fase 3
     });
 
     const handleSubmit = async () => {
@@ -28,8 +31,11 @@ export default function CreatePost() {
 
         setLoading(true);
         try {
-            // TODO: Implementar chamada à API para criar o post
-            // await api.createPost(formData);
+            let response = await postProvider.createPost(formData);
+            if (!(response instanceof PostModel)) {
+                Alert.alert("Erro", "Falha ao criar o post. Tente novamente.");
+                return;
+            }
 
             Alert.alert(
                 "Sucesso",
@@ -37,7 +43,7 @@ export default function CreatePost() {
                 [
                     {
                         text: "OK",
-                        onPress: () => router.back(),
+                        onPress: () => router.push({ pathname: `/view/post/${response.getId()}`, params: { post: JSON.stringify(response) }} as any),
                     },
                 ]
             );
