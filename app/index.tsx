@@ -1,5 +1,5 @@
 import Home from "@/app/view/Home";
 
-export default function Index() {
+export default function HomePage() {
     return <Home />;
 }
