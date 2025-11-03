@@ -1,7 +1,7 @@
 import { HomeController } from "@/app/src/Controller/home";
 import { PostModel } from "@/app/src/Model/post";
 import { PostProvider } from "@/app/src/Provider/post";
-import { Href, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, Image, RefreshControl, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
@@ -42,7 +42,12 @@ export default function Home() {
         <TouchableOpacity
             style={styles.postCard}
             activeOpacity={0.7}
-            onPress={() => router.push(`view/post/${item.getId()}` as Href)}
+            onPress={() => router.push({
+                pathname: `view/post/${item.getId()}`,
+                params: {
+                    post: JSON.stringify(item)
+                }
+            } as any)}
         >
             <Image
                 source={{ uri: item.getThumbnail() }}

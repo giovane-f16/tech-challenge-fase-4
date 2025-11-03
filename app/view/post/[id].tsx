@@ -1,21 +1,21 @@
+import { PostController } from "@/app/src/Controller/post";
+import { PostModel } from "@/app/src/Model/post";
+import { PostProvider } from "@/app/src/Provider/post";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
-    View,
-    Text,
-    Image,
-    StyleSheet,
-    ScrollView,
     ActivityIndicator,
-    TouchableOpacity,
+    Image,
+    ScrollView,
     StatusBar,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from "react-native";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { PostController } from "@/app/src/Controller/post";
-import { PostProvider } from "@/app/src/Provider/post";
-import { PostModel } from "@/app/src/Model/post";
 
 export default function PostDetails() {
-    const { id } = useLocalSearchParams<{ id: string }>();
+    const { id, post: postParam } = useLocalSearchParams<{ id: string; post?: string }>();
     const router = useRouter();
     const [post, setPost] = useState<PostModel | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
@@ -27,21 +27,34 @@ export default function PostDetails() {
     const loadPost = async () => {
         try {
             setError(null);
-            if (id) {
-                const data = await postController.getPost(id);
+
+            if (!postParam) {
+                const data = await postController.getPostById(id);
                 setPost(data);
+                setLoading(false);
+                return;
             }
+
+            if (typeof postParam === "string") {
+                const parsedPost = JSON.parse(postParam);
+                const postModel = postController.getPostByItem(parsedPost);
+                setPost(postModel);
+                setLoading(false);
+                return;
+            }
+
+            setError("Dados do post inválidos.");
+            setLoading(false);
         } catch (err) {
             setError("Erro ao carregar post. Tente novamente.");
             console.error(err);
-        } finally {
             setLoading(false);
         }
     };
 
     useEffect(() => {
         loadPost();
-    }, [id]);
+    }, [id, postParam]);
 
     if (loading) {
         return (

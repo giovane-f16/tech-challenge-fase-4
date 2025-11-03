@@ -8,12 +8,22 @@ export class PostController {
         this.postProvider = postProvider;
     }
 
-    getPost(id: string): Promise<PostModel | null> {
+    getPostById(id: string): Promise<PostModel | null> {
         try {
             const post = this.postProvider.getPostById(id);
             return post;
         } catch (error) {
             console.error("Erro ao obter dados do post:", error);
+            throw error;
+        }
+    }
+
+    getPostByItem(item: any): PostModel {
+        try {
+            const post = new PostModel(item);
+            return post;
+        } catch (error) {
+            console.error("Erro ao criar PostModel a partir do item:", error);
             throw error;
         }
     }
