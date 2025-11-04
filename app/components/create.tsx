@@ -1,25 +1,34 @@
 import { Href, useRouter } from "expo-router";
-import { Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 const createPostButton = () => {
-  const router = useRouter();
+    const router = useRouter();
 
-  return (
-    <TouchableOpacity
-      onPress={() => router.push("view/post/create" as Href)}
-      style={{
+    return (
+        <TouchableOpacity
+            onPress={() => router.push("view/post/create" as Href)}
+            style={styles.button}
+        >
+            <Text style={styles.buttonText}>
+                + Novo Post
+            </Text>
+        </TouchableOpacity>
+    );
+}
+
+const styles = StyleSheet.create({
+    button: {
         marginRight: 16,
         backgroundColor: "#ffffff20",
         paddingHorizontal: 12,
         paddingVertical: 6,
         borderRadius: 6,
-      }}
-    >
-      <Text style={{ color: "#ffffff", fontSize: 16, fontWeight: "600" }}>
-        + Novo Post
-      </Text>
-    </TouchableOpacity>
-  );
-}
+    },
+    buttonText: {
+        color: "#ffffff",
+        fontSize: 16,
+        fontWeight: "600",
+    },
+});
 
 export default createPostButton;
