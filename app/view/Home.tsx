@@ -59,7 +59,7 @@ export default function Home() {
 
             <View style={styles.buttonsContainer}>
                 <EditButton post={item} />
-                <DeleteButton post={item} />
+                <DeleteButton postId={item.getId()} />
             </View>
 
             <View style={styles.postContent}>

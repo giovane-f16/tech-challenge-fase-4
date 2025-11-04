@@ -1,15 +1,49 @@
-import { PostModel } from "@/app/src/Model/post";
+import { PostProvider } from "@/app/src/Provider/post";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { Alert, StyleSheet, Text, TouchableOpacity } from "react-native";
 
-const deleteButton = (post: PostModel) => {
+interface DeleteButtonProps {
+    postId: string
+}
+
+const deleteButton = ({ postId }: DeleteButtonProps) => {
     const router = useRouter();
+    const postProvider = new PostProvider();
+
+    const confirmDelete = () => {
+        Alert.alert(
+            "Confirmar Exclusão",
+            "Tem certeza que deseja excluir este post?",
+            [
+                {
+                    text: "Cancelar",
+                    style: "cancel"
+                },
+                {
+                    text: "Excluir",
+                    style: "destructive",
+                    onPress: handleDelete
+                }
+            ]
+        );
+    };
+
+    const handleDelete = async () => {
+        try {
+            await postProvider.deletePost(postId);
+            Alert.alert("Sucesso", "Post excluído com sucesso!");
+            router.replace("/");
+        } catch (error) {
+            Alert.alert("Erro", "Falha ao excluir o post. Tente novamente.");
+            console.error(error);
+        }
+    };
 
     return (
         <TouchableOpacity
-            onPress={() => router.push(`view/post/delete/${post._id}` as any)}
+            onPress={confirmDelete}
             style={styles.button}
         >
             <Text style={styles.buttonText}>
