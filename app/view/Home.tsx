@@ -1,3 +1,5 @@
+import DeleteButton from "@/app/components/delete";
+import EditButton from "@/app/components/edit";
 import { HomeController } from "@/app/src/Controller/home";
 import { PostModel } from "@/app/src/Model/post";
 import { PostProvider } from "@/app/src/Provider/post";
@@ -54,6 +56,12 @@ export default function Home() {
                 style={styles.thumbnail}
                 resizeMode="cover"
             />
+
+            <View style={styles.buttonsContainer}>
+                <EditButton post={item} style={styles.editButton}/>
+                <DeleteButton post={item} style={styles.deleteButton}/>
+            </View>
+
             <View style={styles.postContent}>
                 <Text style={styles.postTitle} numberOfLines={2}>
                     {item.getTitulo()}
@@ -61,6 +69,7 @@ export default function Home() {
                 <Text style={styles.postExcerpt} numberOfLines={3}>
                     {item.getConteudoResumido(50)}
                 </Text>
+
                 <View style={styles.postFooter}>
                     <View style={styles.authorContainer}>
                         <Text style={styles.authorLabel}>Por:</Text>
@@ -203,6 +212,7 @@ const styles = StyleSheet.create({
         shadowRadius: 3.84,
         elevation: 5,
         overflow: "hidden",
+        position: "relative"
     },
     thumbnail: {
         width: "100%",
@@ -211,6 +221,21 @@ const styles = StyleSheet.create({
     },
     postContent: {
         padding: 16,
+        position: "relative"
+    },
+    buttonsContainer: {
+        position: "absolute",
+        top: 16,
+        right: 10,
+        flexDirection: "row",
+        alignItems: "center",
+        zIndex: 1,
+    },
+    editButton: {
+        width: 70
+    },
+    deleteButton: {
+        width: 70
     },
     postTitle: {
         fontSize: 20,

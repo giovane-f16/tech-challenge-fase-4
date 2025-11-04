@@ -1,10 +1,10 @@
-import { Post } from "@/app/src/Model/post";
+import { PostModel } from "@/app/src/Model/post";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
-const editPostButton = (post: Post) => {
+const editButton = (post: PostModel) => {
     const router = useRouter();
 
     return (
@@ -13,8 +13,7 @@ const editPostButton = (post: Post) => {
             style={styles.button}
         >
             <Text style={styles.buttonText}>
-                <MaterialIcons name="edit" size={16} color="#ffffff" />
-                Editar Post
+                <MaterialIcons name="edit" size={18} color="#ffffff" />
             </Text>
         </TouchableOpacity>
     );
@@ -35,4 +34,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default editPostButton;
+export default editButton;
