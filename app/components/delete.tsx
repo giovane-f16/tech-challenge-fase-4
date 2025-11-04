@@ -34,6 +34,7 @@ const deleteButton = ({ postId }: DeleteButtonProps) => {
         try {
             await postProvider.deletePost(postId);
             Alert.alert("Sucesso", "Post excluído com sucesso!");
+            router.dismissAll();
             router.replace("/");
         } catch (error) {
             Alert.alert("Erro", "Falha ao excluir o post. Tente novamente.");
