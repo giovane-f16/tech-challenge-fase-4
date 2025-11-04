@@ -41,6 +41,13 @@ export default function RootLayout() {
           headerBackTitle: "Voltar",
         }}
       />
+    <Stack.Screen
+        name="view/post/edit/[id]"
+        options={{
+          title: "Editar Post",
+          headerBackTitle: "Voltar",
+        }}
+      />
     </Stack>
   );
 }
