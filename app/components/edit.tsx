@@ -4,12 +4,21 @@ import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
-const editButton = (post: PostModel) => {
+interface EditButtonProps {
+    post: PostModel;
+}
+
+const EditButton = ({ post }: EditButtonProps) => {
     const router = useRouter();
 
     return (
         <TouchableOpacity
-            onPress={() => router.push({ pathname: `view/post/edit/${post._id}`, params: { post: post } } as any)}
+            onPress={() => router.push({
+                pathname: `view/post/edit/${post._id}`,
+                params: {
+                    post: JSON.stringify(post)
+                }
+            } as any)}
             style={styles.button}
         >
             <Text style={styles.buttonText}>
@@ -34,4 +43,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default editButton;
+export default EditButton;

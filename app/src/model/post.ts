@@ -8,7 +8,7 @@ export interface Post {
     data_atualizacao?: Date;
 }
 
-export interface PostCreate {
+export interface PostCreateOrUpdate {
     titulo: string;
     conteudo: string;
     autor: string;

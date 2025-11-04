@@ -58,8 +58,8 @@ export default function Home() {
             />
 
             <View style={styles.buttonsContainer}>
-                <EditButton post={item} style={styles.editButton}/>
-                <DeleteButton post={item} style={styles.deleteButton}/>
+                <EditButton post={item} />
+                <DeleteButton post={item} />
             </View>
 
             <View style={styles.postContent}>
@@ -230,12 +230,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         zIndex: 1,
-    },
-    editButton: {
-        width: 70
-    },
-    deleteButton: {
-        width: 70
     },
     postTitle: {
         fontSize: 20,
