@@ -57,6 +57,34 @@ export default function Edit() {
         }
     };
 
+    const confirmDelete = () => {
+        Alert.alert(
+            "Confirmar Exclusão",
+            "Tem certeza que deseja excluir este post?",
+            [
+                {
+                    text: "Cancelar",
+                    style: "cancel"
+                },
+                {
+                    text: "Excluir",
+                    style: "destructive",
+                    onPress: handleDelete
+                }
+            ]
+        );
+    };
+
+    const handleDelete = async () => {
+        try {
+            await postProvider.deletePost(id);
+            Alert.alert("Sucesso", "Post excluído com sucesso!");
+            router.replace("/");
+        } catch (error) {
+            Alert.alert("Erro", "Falha ao excluir o post. Tente novamente.");
+            console.error(error);
+        }
+    };
     return (
         <View style={styles.container}>
             <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
@@ -133,6 +161,23 @@ export default function Edit() {
                     </TouchableOpacity>
 
                     <TouchableOpacity
+                        style={[
+                            styles.submitDeleteButton,
+                            loading && styles.submitButtonDisabled,
+                        ]}
+                        onPress={confirmDelete}
+                        disabled={loading}
+                    >
+                        {loading ? (
+                            <ActivityIndicator color="#ffffff" />
+                        ) : (
+                            <Text style={styles.submitButtonText}>
+                                Excluir Post
+                            </Text>
+                        )}
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
                         style={styles.cancelButton}
                         onPress={() => router.back()}
                         disabled={loading}
@@ -192,6 +237,13 @@ const styles = StyleSheet.create({
         color: "#ffffff",
         fontSize: 16,
         fontWeight: "600",
+    },
+    submitDeleteButton: {
+        backgroundColor: "#d21f12ff",
+        paddingVertical: 14,
+        borderRadius: 8,
+        alignItems: "center",
+        marginTop: 1,
     },
     cancelButton: {
         paddingVertical: 14,
