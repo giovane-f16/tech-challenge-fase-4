@@ -1,3 +1,5 @@
+import Config from "@/app/src/Config/config";
+
 export interface Post {
     _id: string;
     titulo: string;
@@ -55,6 +57,11 @@ export class PostModel implements Post {
     }
 
     getThumbnail(): string {
+        if (!this.thumbnail) {
+            let thumbnail = `${Config.getApiEndpoint()}/posts/${this.getId()}/thumbnail`
+            return thumbnail;
+        }
+
         return this.thumbnail;
     }
 

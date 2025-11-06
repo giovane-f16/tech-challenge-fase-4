@@ -1,19 +1,61 @@
 import PostModel from "@/app/src/Model/post";
 import { PostProvider } from "@/app/src/Provider/post";
+import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { ActivityIndicator, Alert, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, Image, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function CreatePost() {
     const router = useRouter();
     const postProvider = new PostProvider();
     const [loading, setLoading] = useState(false);
+    const [imageUri, setImageUri] = useState<string | null>(null);
     const [formData, setFormData] = useState({
         titulo: "",
         conteudo: "",
         autor: "",
-        thumbnail: "", // @toDo: ver como foi tratado na fase 3
+        thumbnail: "",
     });
+
+    const pickImage = async () => {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync(); // Solicita permissão para acessar a galeria
+
+        if (status !== "granted") {
+            Alert.alert("Permissão necessária", "Precisamos de permissão para acessar suas fotos.");
+            return;
+        }
+
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [16, 9],
+            quality: 0.8,
+            base64: true
+        });
+
+        if (!result.canceled && result.assets[0]) {
+            setImageUri(result.assets[0].uri);
+            if (!result.assets[0].base64) {
+                return;
+            }
+
+            const mimeType = result.assets[0].mimeType || result.assets[0].uri.match(/\.(png|jpg|jpeg|gif)$/i)?.[1];
+            let contentType = "image/jpeg";
+
+            if (mimeType) {
+                if (mimeType.includes("png") || mimeType === "png") {
+                    contentType = "image/png";
+                } else if (mimeType.includes("gif") || mimeType === "gif") {
+                    contentType = "image/gif";
+                } else if (mimeType.includes("webp") || mimeType === "webp") {
+                    contentType = "image/webp";
+                }
+            }
+
+            const base64WithPrefix = `data:${contentType};base64,${result.assets[0].base64}`;
+            setFormData({ ...formData, thumbnail: base64WithPrefix });
+        }
+    };
 
     const handleSubmit = async () => {
         if (!formData.titulo.trim()) {
@@ -92,18 +134,35 @@ export default function CreatePost() {
                     </View>
 
                     <View style={styles.formGroup}>
-                        <Text style={styles.label}>URL da Imagem</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="https://exemplo.com/imagem.jpg"
-                            value={formData.thumbnail}
-                            onChangeText={(text) =>
-                                setFormData({ ...formData, thumbnail: text })
-                            }
-                            editable={!loading}
-                            keyboardType="url"
-                            autoCapitalize="none"
-                        />
+                        <Text style={styles.label}>Imagem do Post</Text>
+                        <TouchableOpacity
+                            style={styles.imagePickerButton}
+                            onPress={pickImage}
+                            disabled={loading}
+                        >
+                            <Text style={styles.imagePickerButtonText}>
+                                {imageUri ? "Alterar Imagem" : "Selecionar Imagem da Galeria"}
+                            </Text>
+                        </TouchableOpacity>
+
+                        {imageUri && (
+                            <View style={styles.imagePreviewContainer}>
+                                <Image
+                                    source={{ uri: imageUri }}
+                                    style={styles.imagePreview}
+                                    resizeMode="cover"
+                                />
+                                <TouchableOpacity
+                                    style={styles.removeImageButton}
+                                    onPress={() => {
+                                        setImageUri(null);
+                                        setFormData({ ...formData, thumbnail: "" });
+                                    }}
+                                >
+                                    <Text style={styles.removeImageButtonText}>Remover</Text>
+                                </TouchableOpacity>
+                            </View>
+                        )}
                     </View>
 
                     <View style={styles.formGroup}>
@@ -211,6 +270,42 @@ const styles = StyleSheet.create({
     cancelButtonText: {
         color: "#6b7280",
         fontSize: 16,
+        fontWeight: "600",
+    },
+    imagePickerButton: {
+        backgroundColor: "#e5e7eb",
+        paddingVertical: 12,
+        paddingHorizontal: 16,
+        borderRadius: 8,
+        alignItems: "center",
+        borderWidth: 1,
+        borderColor: "#d1d5db",
+    },
+    imagePickerButtonText: {
+        color: "#374151",
+        fontSize: 16,
+        fontWeight: "600",
+    },
+    imagePreviewContainer: {
+        marginTop: 12,
+        alignItems: "center",
+    },
+    imagePreview: {
+        width: "100%",
+        height: 200,
+        borderRadius: 8,
+        backgroundColor: "#e5e7eb",
+    },
+    removeImageButton: {
+        marginTop: 8,
+        backgroundColor: "#ef4444",
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+        borderRadius: 6,
+    },
+    removeImageButtonText: {
+        color: "#ffffff",
+        fontSize: 14,
         fontWeight: "600",
     },
 });
