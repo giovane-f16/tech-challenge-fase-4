@@ -3,7 +3,7 @@ import { PostProvider } from "@/app/src/Provider/post";
 import * as ImagePicker from "expo-image-picker";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
-import { ActivityIndicator, Alert, Image, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, Image, KeyboardAvoidingView, Platform, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function Edit() {
     const { id, post: postParam } = useLocalSearchParams<{ id: string; post?: string }>();
@@ -130,9 +130,17 @@ export default function Edit() {
         }
     };
     return (
-        <View style={styles.container}>
+        <KeyboardAvoidingView
+            style={styles.container}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
+        >
             <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
-            <ScrollView style={styles.scrollContent}>
+            <ScrollView
+                contentContainerStyle={styles.scrollContent}
+                keyboardShouldPersistTaps="handled"
+                showsVerticalScrollIndicator={false}
+            >
                 <View style={styles.form}>
                     <View style={styles.formGroup}>
                         <Text style={styles.label}>Título</Text>
@@ -195,7 +203,7 @@ export default function Edit() {
                     <View style={styles.formGroup}>
                         <Text style={styles.label}>Conteúdo</Text>
                         <TextInput
-                            style={styles.input}
+                            style={[styles.input, styles.textArea]}
                             keyboardType="default"
                             placeholder="Digite o conteúdo do post"
                             value={formData.conteudo}
@@ -249,7 +257,7 @@ export default function Edit() {
                     </TouchableOpacity>
                 </View>
             </ScrollView>
-        </View>
+        </KeyboardAvoidingView>
     );
 }
 
@@ -259,6 +267,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#f9fafb",
     },
     scrollContent: {
+        flexGrow: 1,
         padding: 20,
         paddingBottom: 40,
     },
@@ -285,6 +294,7 @@ const styles = StyleSheet.create({
     textArea: {
         minHeight: 150,
         maxHeight: 300,
+        textAlignVertical: 'top',
     },
     submitButton: {
         backgroundColor: "#33b612ff",

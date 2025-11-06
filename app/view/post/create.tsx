@@ -3,7 +3,7 @@ import { PostProvider } from "@/app/src/Provider/post";
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { ActivityIndicator, Alert, Image, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, Image, KeyboardAvoidingView, Platform, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function CreatePost() {
     const router = useRouter();
@@ -98,10 +98,15 @@ export default function CreatePost() {
     };
 
     return (
-        <View style={styles.container}>
+        <KeyboardAvoidingView
+            style={styles.container}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
+        >
             <StatusBar barStyle="light-content" backgroundColor="#39558eff" />
             <ScrollView
                 contentContainerStyle={styles.scrollContent}
+                keyboardShouldPersistTaps="handled"
                 showsVerticalScrollIndicator={false}
             >
                 <View style={styles.form}>
@@ -208,7 +213,7 @@ export default function CreatePost() {
                     </TouchableOpacity>
                 </View>
             </ScrollView>
-        </View>
+        </KeyboardAvoidingView>
     );
 }
 
@@ -218,6 +223,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#f9fafb",
     },
     scrollContent: {
+        flexGrow: 1,
         padding: 20,
         paddingBottom: 40,
     },
@@ -244,6 +250,7 @@ const styles = StyleSheet.create({
     textArea: {
         minHeight: 150,
         maxHeight: 300,
+        textAlignVertical: 'top',
     },
     submitButton: {
         backgroundColor: "#39558eff",
