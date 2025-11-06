@@ -68,7 +68,6 @@ export class PostModel implements Post {
             let thumbnail = `${Config.getApiEndpoint()}/posts/${this.getId()}/thumbnail/${this.getThumbnailId()}`;
             return thumbnail;
         }
-
         return this.thumbnail;
     }
 
