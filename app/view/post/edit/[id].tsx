@@ -9,14 +9,15 @@ export default function Edit() {
     const { id, post: postParam } = useLocalSearchParams<{ id: string; post?: string }>();
     const router = useRouter();
     const postProvider = new PostProvider();
-    const postData = postParam ? JSON.parse(postParam) : null;
+    const postData = postParam ? new PostModel(JSON.parse(postParam)) : null;
+
     const [loading, setLoading] = useState<boolean>(false);
-    const [imageUri, setImageUri] = useState<string | null>(postData?.thumbnail || null);
+    const [imageUri, setImageUri] = useState<string | null>(postData?.getThumbnail() || null);
     const [formData, setFormData] = useState({
-        titulo: postData?.titulo || "",
-        conteudo: postData?.conteudo || "",
-        autor: postData?.autor || "",
-        thumbnail: postData?.thumbnail || "",
+        titulo: postData?.getTitulo() || "",
+        conteudo: postData?.getConteudo() || "",
+        autor: postData?.getAutor() || "",
+        thumbnail: postData?.getThumbnail() || "",
     });
 
     const pickImage = async () => {
