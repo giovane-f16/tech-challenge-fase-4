@@ -7,6 +7,7 @@ export interface Post {
     autor: string;
     data_criacao: Date;
     thumbnail: string;
+    thumbnail_id?: string;
     data_atualizacao?: Date;
 }
 
@@ -24,6 +25,7 @@ export class PostModel implements Post {
     autor: string;
     data_criacao: Date;
     thumbnail: string;
+    thumbnail_id?: string;
     data_atualizacao?: Date;
 
     constructor(post: Post) {
@@ -33,6 +35,7 @@ export class PostModel implements Post {
         this.autor = post.autor;
         this.data_criacao = post.data_criacao;
         this.thumbnail = post.thumbnail;
+        this.thumbnail_id = post.thumbnail_id;
         this.data_atualizacao = post.data_atualizacao ?? undefined;
     }
 
@@ -56,9 +59,13 @@ export class PostModel implements Post {
         return this.data_criacao;
     }
 
+    getThumbnailId(): string {
+        return this.thumbnail_id || "";
+    }
+
     getThumbnail(): string {
         if (!this.thumbnail) {
-            let thumbnail = `${Config.getApiEndpoint()}/posts/${this.getId()}/thumbnail`
+            let thumbnail = `${Config.getApiEndpoint()}/posts/${this.getId()}/thumbnail/${this.getThumbnailId()}`;
             return thumbnail;
         }
 
