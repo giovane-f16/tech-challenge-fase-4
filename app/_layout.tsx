@@ -17,14 +17,23 @@ export default function RootLayout() {
       <Stack.Screen
         name="index"
         options={{
-          title: "Blogging",
-          headerRight: () => <CreatePostButton />
+          title: "Login",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="view/Login"
+        options={{
+          title: "Login",
+          headerShown: false,
         }}
       />
       <Stack.Screen
         name="view/Home"
         options={{
           title: "Home",
+          headerLeft: () => null,
+          headerRight: () => <CreatePostButton />,
         }}
       />
       <Stack.Screen

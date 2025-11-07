@@ -1,4 +1,4 @@
-import { loginUser, registerUser } from "@/app/src/services/authService";
+import { loginUser, registerUser } from "@/app/src/Services/authService";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { ActivityIndicator, Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
@@ -23,7 +23,10 @@ const LoginScreen: React.FC = () => {
             } else {
                 await registerUser(email, password);
             }
-            router.replace("/");
+
+            setTimeout(() => {
+                router.replace("/view/Home");
+            }, 100);
         } catch (error: any) {
             Alert.alert("Erro", error.message || "Erro na autenticação");
         } finally {

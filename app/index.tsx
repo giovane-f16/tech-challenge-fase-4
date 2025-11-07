@@ -1,5 +1,5 @@
-import Home from "@/app/view/Home";
+import LoginScreen from "@/app/view/Login";
 
 export default function HomePage() {
-    return <Home />;
+    return <LoginScreen />;
 }
