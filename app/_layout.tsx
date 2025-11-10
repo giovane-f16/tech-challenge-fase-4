@@ -1,5 +1,7 @@
+import AdminButton from "@/app/components/admin";
 import CreatePostButton from "@/app/components/create";
 import { Stack } from "expo-router";
+import { View } from "react-native";
 
 export default function RootLayout() {
   return (
@@ -33,7 +35,12 @@ export default function RootLayout() {
         options={{
           title: "Home",
           headerLeft: () => null,
-          headerRight: () => <CreatePostButton />,
+          headerRight: () => (
+            <View style={{ flexDirection: "row" }}>
+              <AdminButton />
+              <CreatePostButton />
+            </View>
+          ),
         }}
       />
       <Stack.Screen
@@ -50,10 +57,31 @@ export default function RootLayout() {
           headerBackTitle: "Voltar",
         }}
       />
-    <Stack.Screen
+      <Stack.Screen
         name="view/post/edit/[id]"
         options={{
           title: "Editar Post",
+          headerBackTitle: "Voltar",
+        }}
+      />
+      <Stack.Screen
+        name="view/admin/professores"
+        options={{
+          title: "Gerenciar Professores",
+          headerBackTitle: "Voltar",
+        }}
+      />
+      <Stack.Screen
+        name="view/admin/create-professor"
+        options={{
+          title: "Novo Professor",
+          headerBackTitle: "Voltar",
+        }}
+      />
+      <Stack.Screen
+        name="view/admin/edit-professor/[id]"
+        options={{
+          title: "Editar Professor",
           headerBackTitle: "Voltar",
         }}
       />
