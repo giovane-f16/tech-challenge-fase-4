@@ -51,7 +51,7 @@ const ProfessoresScreen: React.FC = () => {
             <View style={styles.professorInfo}>
                 <Text style={styles.professorEmail}>{item.email}</Text>
                 <Text style={styles.professorDate}>
-                    Criado em: {new Date(item.createdAt).toLocaleDateString()}
+                    Criado em: {new Date(item.createdAt).toLocaleDateString("pt-BR")}
                 </Text>
             </View>
             <Text style={styles.arrow}>›</Text>
