@@ -1,5 +1,6 @@
 import AdminButton from "@/app/components/admin";
 import CreatePostButton from "@/app/components/create";
+import UserInfo from "@/app/components/userInfo";
 import { Stack } from "expo-router";
 import { View } from "react-native";
 
@@ -36,7 +37,8 @@ export default function RootLayout() {
           title: "Home",
           headerLeft: () => null,
           headerRight: () => (
-            <View style={{ flexDirection: "row" }}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <UserInfo />
               <AdminButton />
               <CreatePostButton />
             </View>
