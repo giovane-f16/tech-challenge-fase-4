@@ -5,6 +5,7 @@ import { ActivityIndicator, Alert, FlatList, StyleSheet, Text, TouchableOpacity,
 
 interface Professor {
     uid: string;
+    name: string;
     email: string;
     createdAt: string;
 }
@@ -49,6 +50,7 @@ const ProfessoresScreen: React.FC = () => {
             onPress={() => handleEditProfessor(item)}
         >
             <View style={styles.professorInfo}>
+                <Text style={styles.professorName}>{item.name}</Text>
                 <Text style={styles.professorEmail}>{item.email}</Text>
                 <Text style={styles.professorDate}>
                     Criado em: {new Date(item.createdAt).toLocaleDateString("pt-BR")}
@@ -147,15 +149,21 @@ const styles = StyleSheet.create({
     professorInfo: {
         flex: 1,
     },
-    professorEmail: {
-        fontSize: 16,
-        fontWeight: "600",
+    professorName: {
+        fontSize: 18,
+        fontWeight: "bold",
         color: "#333",
         marginBottom: 4,
     },
-    professorDate: {
+    professorEmail: {
         fontSize: 14,
+        fontWeight: "500",
         color: "#666",
+        marginBottom: 4,
+    },
+    professorDate: {
+        fontSize: 12,
+        color: "#999",
     },
     arrow: {
         fontSize: 24,

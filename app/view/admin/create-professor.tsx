@@ -15,13 +15,14 @@ import {
 } from "react-native";
 
 const CreateProfessorScreen: React.FC = () => {
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
 
     const handleCreate = async () => {
-        if (!email.trim() || !password.trim() || !confirmPassword.trim()) {
+        if (!name.trim() || !email.trim() || !password.trim() || !confirmPassword.trim()) {
             Alert.alert("Erro", "Preencha todos os campos");
             return;
         }
@@ -39,7 +40,7 @@ const CreateProfessorScreen: React.FC = () => {
         setLoading(true);
 
         try {
-            await createProfessor(email, password);
+            await createProfessor(name, email, password);
             Alert.alert("Sucesso", "Professor criado com sucesso!", [
                 {
                     text: "OK",
@@ -68,6 +69,16 @@ const CreateProfessorScreen: React.FC = () => {
         >
             <ScrollView contentContainerStyle={styles.scrollContent}>
                 <View style={styles.formContainer}>
+                    <Text style={styles.label}>Nome *</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Nome completo do professor"
+                        value={name}
+                        onChangeText={setName}
+                        autoCapitalize="words"
+                        editable={!loading}
+                    />
+
                     <Text style={styles.label}>Email *</Text>
                     <TextInput
                         style={styles.input}

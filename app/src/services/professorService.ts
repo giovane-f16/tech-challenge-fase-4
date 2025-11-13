@@ -4,18 +4,20 @@ import { addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, Timestamp 
 
 export interface Professor {
     uid: string;
+    name: string;
     email: string;
     createdAt: string;
 }
 
 const PROFESSORS_COLLECTION = "professors";
 
-export const createProfessor = async (email: string, password: string): Promise<User> => {
+export const createProfessor = async (name: string, email: string, password: string): Promise<User> => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
     await addDoc(collection(db, PROFESSORS_COLLECTION), {
         uid: user.uid,
+        name: name,
         email: user.email,
         createdAt: Timestamp.now(),
     });
@@ -32,6 +34,7 @@ export const getProfessors = async (): Promise<Professor[]> => {
         const data = doc.data();
         professors.push({
             uid: data.uid,
+            name: data.name || "",
             email: data.email,
             createdAt: data.createdAt.toDate().toISOString(),
         });
