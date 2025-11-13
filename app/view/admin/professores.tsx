@@ -1,6 +1,7 @@
+import { getProfessors } from "@/app/src/Services/professorService";
 import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface Professor {
     uid: string;
@@ -17,20 +18,15 @@ const ProfessoresScreen: React.FC = () => {
     }, []);
 
     const loadProfessors = async () => {
-        // TODO: Implementar busca de professores do Firestore
-        setLoading(false);
-        setProfessors([
-            {
-                uid: "1",
-                email: "professor1@example.com",
-                createdAt: new Date().toISOString(),
-            },
-            {
-                uid: "2",
-                email: "professor2@example.com",
-                createdAt: new Date().toISOString(),
-            },
-        ]);
+        try {
+            const data = await getProfessors();
+            setProfessors(data);
+        } catch (error) {
+            console.error("Erro ao carregar professores:", error);
+            Alert.alert("Erro", "Não foi possível carregar a lista de professores");
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleCreateProfessor = () => {

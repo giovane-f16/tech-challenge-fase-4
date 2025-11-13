@@ -1,4 +1,5 @@
 import { deleteUserAccount, updateUserEmail, updateUserPassword } from "@/app/src/Services/authService";
+import { deleteProfessor } from "@/app/src/Services/professorService";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
@@ -99,9 +100,13 @@ const EditProfessorScreen: React.FC = () => {
         }
 
         setLoading(true);
-
         try {
+            // Deletar do Auth (requer senha para reautenticação)
             await deleteUserAccount(currentPassword);
+
+            // Deletar do Firestore
+            await deleteProfessor(id);
+
             Alert.alert("Sucesso", "Professor excluído com sucesso!", [
                 {
                     text: "OK",
