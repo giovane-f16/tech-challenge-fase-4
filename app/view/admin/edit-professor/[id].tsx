@@ -1,7 +1,7 @@
-import { deleteUserAccount, updateUserEmail, updateUserPassword } from "@/app/src/Services/authService";
+import { deleteUserAccount, isSuperAdmin, updateUserEmail, updateUserPassword } from "@/app/src/Services/authService";
 import { deleteProfessor } from "@/app/src/Services/professorService";
 import { router, useLocalSearchParams } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 const EditProfessorScreen: React.FC = () => {
@@ -11,6 +11,11 @@ const EditProfessorScreen: React.FC = () => {
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    useEffect(() => {
+        setIsAdmin(isSuperAdmin());
+    }, []);
 
     const handleUpdateEmail = async () => {
         if (!email.trim() || !currentPassword.trim()) {
@@ -94,17 +99,20 @@ const EditProfessorScreen: React.FC = () => {
     };
 
     const confirmDelete = async () => {
-        if (!currentPassword.trim()) {
+        // Se for super admin, não precisa de senha
+        if (!isAdmin && !currentPassword.trim()) {
             Alert.alert("Erro", "Digite a senha atual para confirmar a exclusão");
             return;
         }
 
         setLoading(true);
         try {
-            // Deletar do Auth (requer senha para reautenticação)
-            await deleteUserAccount(currentPassword);
+            // Se não for admin, precisa deletar do Auth (requer senha)
+            if (!isAdmin) {
+                await deleteUserAccount(currentPassword);
+            }
 
-            // Deletar do Firestore
+            // Deletar do Firestore (sempre necessário)
             await deleteProfessor(id);
 
             Alert.alert("Sucesso", "Professor excluído com sucesso!", [
@@ -207,6 +215,24 @@ const EditProfessorScreen: React.FC = () => {
 
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>Zona de Perigo</Text>
+                    {!isAdmin && (
+                        <>
+                            <Text style={styles.label}>Senha Atual (para confirmar exclusão)</Text>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Digite sua senha"
+                                value={currentPassword}
+                                onChangeText={setCurrentPassword}
+                                secureTextEntry
+                                editable={!loading}
+                            />
+                        </>
+                    )}
+                    {isAdmin && (
+                        <Text style={styles.adminNote}>
+                            Como super admin, você pode excluir sem precisar de senha.
+                        </Text>
+                    )}
                     <TouchableOpacity
                         style={[styles.deleteButton, loading && styles.buttonDisabled]}
                         onPress={handleDelete}
@@ -288,6 +314,12 @@ const styles = StyleSheet.create({
         color: "#fff",
         fontSize: 16,
         fontWeight: "bold",
+    },
+    adminNote: {
+        fontSize: 14,
+        color: "#007AFF",
+        marginBottom: 15,
+        fontStyle: "italic",
     },
     deleteButton: {
         backgroundColor: "#ff3b30",

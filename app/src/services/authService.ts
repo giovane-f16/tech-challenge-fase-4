@@ -1,15 +1,6 @@
+import { Config } from "@/app/src/Config/config";
 import { auth } from "@/app/src/Config/firebase";
-import {
-    createUserWithEmailAndPassword,
-    deleteUser,
-    EmailAuthProvider,
-    reauthenticateWithCredential,
-    signInWithEmailAndPassword,
-    signOut,
-    updateEmail,
-    updatePassword,
-    User
-} from "firebase/auth";
+import { createUserWithEmailAndPassword, deleteUser, EmailAuthProvider, reauthenticateWithCredential, signInWithEmailAndPassword, signOut, updateEmail, updatePassword, User } from "firebase/auth";
 
 export const loginUser = async (email: string, password: string): Promise<User> => {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -27,6 +18,12 @@ export const logoutUser = async (): Promise<void> => {
 
 export const getCurrentUser = (): User | null => {
     return auth.currentUser;
+};
+
+export const isSuperAdmin = (): boolean => {
+    const user = auth.currentUser;
+    const SUPER_ADMIN_EMAIL = Config.getSuperAdminEmail();
+    return user?.email === SUPER_ADMIN_EMAIL;
 };
 
 export const updateUserEmail = async (newEmail: string, currentPassword: string): Promise<void> => {
