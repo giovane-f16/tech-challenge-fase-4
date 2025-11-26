@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     },
     userName: {
         color: "#ffffff",
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: "600",
         marginRight: 10,
     },
