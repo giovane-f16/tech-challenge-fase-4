@@ -67,7 +67,7 @@ const UserInfo: React.FC = () => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.userName}>{userName}</Text>
+            <Text style={styles.userName}>Olá, {userName}.</Text>
             <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
                 <Text style={styles.logoutText}>Sair</Text>
             </TouchableOpacity>
