@@ -1,6 +1,7 @@
-import { db } from "@/app/src/Config/firebase";
-import { getCurrentUser, logoutUser } from "@/app/src/Services/authService";
+import { auth, db } from "@/app/src/Config/firebase";
+import { logoutUser } from "@/app/src/Services/authService";
 import { router } from "expo-router";
+import { User, onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -9,11 +10,18 @@ const UserInfo: React.FC = () => {
     const [userName, setUserName] = useState<string>("Usuário");
 
     useEffect(() => {
-        loadUserName();
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                loadUserName(user);
+            } else {
+                setUserName("Usuário");
+            }
+        });
+
+        return () => unsubscribe();
     }, []);
 
-    const loadUserName = async () => {
-        const user = getCurrentUser();
+    const loadUserName = async (user: User) => {
         if (!user || !user.uid) return;
 
         try {
@@ -67,7 +75,7 @@ const UserInfo: React.FC = () => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.userName}>Olá, {userName}.</Text>
+            <Text style={styles.userName}>Olá, {userName}</Text>
             <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
                 <Text style={styles.logoutText}>Sair</Text>
             </TouchableOpacity>
