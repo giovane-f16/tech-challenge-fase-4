@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface Professor {
-    uid: string;
+    docId: string;
     name: string;
     email: string;
     createdAt: string;
@@ -38,7 +38,7 @@ const ProfessoresScreen: React.FC = () => {
         router.push({
             pathname: "/view/admin/edit-professor/[id]",
             params: {
-                id: professor.uid,
+                id: professor.docId,
                 email: professor.email,
             },
         });
@@ -79,11 +79,10 @@ const ProfessoresScreen: React.FC = () => {
                     <Text style={styles.createButtonText}>+ Novo Professor</Text>
                 </TouchableOpacity>
             </View>
-
             <FlatList
                 data={professors}
                 renderItem={renderProfessor}
-                keyExtractor={(item) => item.uid}
+                keyExtractor={(item) => item.docId}
                 contentContainerStyle={styles.listContainer}
                 ListEmptyComponent={
                     <View style={styles.emptyContainer}>

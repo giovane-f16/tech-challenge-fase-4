@@ -1,9 +1,10 @@
 import { auth, db } from "@/app/src/Config/firebase";
 import { createUserWithEmailAndPassword, User } from "firebase/auth";
-import { addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, Timestamp, where } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, query, Timestamp, where } from "firebase/firestore";
 
 export interface UserApp {
-    uid: string;
+    docId: string;  // ID do documento no Firestore
+    uid: string;    // UID do Firebase Auth
     name: string;
     email: string;
     createdAt: string;
@@ -29,23 +30,25 @@ export const createProfessor = async (name: string, email: string, password: str
 
 export const getProfessors = async (): Promise<UserApp[]> => {
     const q = query(
-        collection(db, COLLECTION), 
-        where("userType", "==", "professor"),
-        orderBy("createdAt", "desc")
+        collection(db, COLLECTION),
+        where("userType", "==", "professor")
     );
     const querySnapshot = await getDocs(q);
 
     const professors: UserApp[] = [];
-    querySnapshot.forEach((doc) => {
-        const data = doc.data();
+    querySnapshot.forEach((document) => {
+        const data = document.data();
         professors.push({
-            uid: data.uid,
+            docId: document.id,  // ID do documento
+            uid: data.uid,       // UID do Auth
             name: data.name || "",
             email: data.email,
             createdAt: data.createdAt.toDate().toISOString(),
             userType: data.userType,
         });
     });
+
+    professors.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
     return professors;
 };
