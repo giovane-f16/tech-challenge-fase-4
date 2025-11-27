@@ -2,12 +2,14 @@ import { loginUser, registerUser } from "@/app/src/Services/authService";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { ActivityIndicator, Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Checkbox } from "react-native-paper";
 
 const LoginScreen: React.FC = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLogin, setIsLogin] = useState(true);
     const [loading, setLoading] = useState(false);
+    const [userType, setUserType] = useState<"professor" | "aluno">("aluno");
 
     const handleSubmit = async () => {
         if (!email.trim() || !password.trim()) {
@@ -56,6 +58,22 @@ const LoginScreen: React.FC = () => {
                 onChangeText={setPassword}
                 secureTextEntry
             />
+
+            <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 15 }}>
+                <Checkbox
+                    status={userType === "aluno" ? "checked" : "unchecked"}
+                    onPress={() => setUserType("aluno")}
+                    color="#007AFF"
+                />
+                <Text style={{ marginLeft: 2 }}>Aluno</Text>
+
+                <Checkbox
+                    status={userType === "professor" ? "checked" : "unchecked"}
+                    onPress={() => setUserType("professor")}
+                    color="#007AFF"
+                />
+                <Text style={{ marginLeft: 2 }}>Professor</Text>
+            </View>
 
             <TouchableOpacity
                 style={styles.button}
