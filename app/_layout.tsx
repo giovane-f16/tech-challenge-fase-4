@@ -1,4 +1,5 @@
 import UserInfo from "@/app/components/userInfo";
+import BotaoVoltar from "@/app/components/voltar";
 import { Ionicons } from "@expo/vector-icons";
 import { Drawer } from "expo-router/drawer";
 
@@ -54,6 +55,9 @@ export default function RootLayout() {
                     drawerIcon: ({ color, size }) => (
                         <Ionicons name="add-circle-outline" size={size} color={color} />
                     ),
+                    headerLeft: () => {
+                        return <BotaoVoltar />
+                    },
                 }}
             />
             <Drawer.Screen
@@ -71,24 +75,36 @@ export default function RootLayout() {
                 name="view/post/[id]"
                 options={{
                     title: "Detalhes do Post",
+                    headerLeft: () => {
+                        return <BotaoVoltar />
+                    },
                 }}
             />
             <Drawer.Screen
                 name="view/post/edit/[id]"
                 options={{
                     title: "Editar Post",
+                    headerLeft: () => {
+                        return <BotaoVoltar />
+                    },
                 }}
             />
             <Drawer.Screen
                 name="view/admin/create-professor"
                 options={{
                     title: "Novo Professor",
+                    headerLeft: () => {
+                        return <BotaoVoltar caminho={"/view/admin/professores"} />
+                    },
                 }}
             />
             <Drawer.Screen
                 name="view/admin/edit-professor/[id]"
                 options={{
                     title: "Editar Professor",
+                    headerLeft: () => {
+                        return <BotaoVoltar caminho={"/view/admin/professores"} />
+                    },
                 }}
             />
         </Drawer>
