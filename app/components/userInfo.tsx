@@ -2,7 +2,7 @@ import { auth, db } from "@/app/src/Config/firebase";
 import { logoutUser } from "@/app/src/Services/authService";
 import { router } from "expo-router";
 import { User, onAuthStateChanged } from "firebase/auth";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
@@ -25,16 +25,13 @@ const UserInfo: React.FC = () => {
         if (!user || !user.uid) return;
 
         try {
-            // Buscar o nome do professor no Firestore
-            const q = query(
-                collection(db, "professors"),
-                where("uid", "==", user.uid)
-            );
-            const querySnapshot = await getDocs(q);
+            // Buscar diretamente pelo ID do documento
+            const userDocRef = doc(db, "users", user.uid);
+            const userDoc = await getDoc(userDocRef);
 
-            if (!querySnapshot.empty) {
-                const professorData = querySnapshot.docs[0].data();
-                setUserName(professorData.name || user.email?.split("@")[0] || "Usuário");
+            if (userDoc.exists()) {
+                const userData = userDoc.data();
+                setUserName(userData.name || user.email?.split("@")[0] || "Usuário");
             } else {
                 // Se não encontrar no Firestore, usa o email
                 setUserName(user.email?.split("@")[0] || "Usuário");
