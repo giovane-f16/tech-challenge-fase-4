@@ -1,35 +1,41 @@
 import { auth, db } from "@/app/src/Config/firebase";
 import { createUserWithEmailAndPassword, User } from "firebase/auth";
-import { addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, Timestamp } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, Timestamp, where } from "firebase/firestore";
 
-export interface Professor {
+export interface UserApp {
     uid: string;
     name: string;
     email: string;
     createdAt: string;
+    userType?: "professor" | "aluno";
 }
 
-const PROFESSORS_COLLECTION = "professors";
+const COLLECTION = "users";
 
 export const createProfessor = async (name: string, email: string, password: string): Promise<User> => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    await addDoc(collection(db, PROFESSORS_COLLECTION), {
+    await addDoc(collection(db, COLLECTION), {
         uid: user.uid,
         name: name,
         email: user.email,
         createdAt: Timestamp.now(),
+        userType: "professor",
     });
 
     return user;
 };
 
-export const getProfessors = async (): Promise<Professor[]> => {
-    const q = query(collection(db, PROFESSORS_COLLECTION), orderBy("createdAt", "desc"));
+export const getProfessors = async (): Promise<UserApp[]> => {
+    const q = query(
+        collection(db, COLLECTION), 
+        where("userType", "==", "professor"),
+        orderBy("createdAt", "desc")
+    );
     const querySnapshot = await getDocs(q);
 
-    const professors: Professor[] = [];
+    const professors: UserApp[] = [];
     querySnapshot.forEach((doc) => {
         const data = doc.data();
         professors.push({
@@ -37,6 +43,7 @@ export const getProfessors = async (): Promise<Professor[]> => {
             name: data.name || "",
             email: data.email,
             createdAt: data.createdAt.toDate().toISOString(),
+            userType: data.userType,
         });
     });
 
@@ -44,12 +51,12 @@ export const getProfessors = async (): Promise<Professor[]> => {
 };
 
 export const deleteProfessor = async (uid: string): Promise<void> => {
-    const q = query(collection(db, PROFESSORS_COLLECTION));
+    const q = query(collection(db, COLLECTION));
     const querySnapshot = await getDocs(q);
 
     querySnapshot.forEach(async (document) => {
         if (document.data().uid === uid) {
-            await deleteDoc(doc(db, PROFESSORS_COLLECTION, document.id)); // Nota: Para deletar do Auth, o usuário precisa estar autenticado
+            await deleteDoc(doc(db, COLLECTION, document.id)); // Nota: Para deletar do Auth, o usuário precisa estar autenticado
         }
     });
 };
