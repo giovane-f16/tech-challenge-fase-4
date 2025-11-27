@@ -10,6 +10,7 @@ const LoginScreen: React.FC = () => {
     const [isLogin, setIsLogin] = useState(true);
     const [loading, setLoading] = useState(false);
     const [userType, setUserType] = useState<"professor" | "aluno">("aluno");
+    const [name, setName] = useState("");
 
     const handleSubmit = async () => {
         if (!email.trim() || !password.trim()) {
@@ -21,9 +22,9 @@ const LoginScreen: React.FC = () => {
 
         try {
             if (isLogin) {
-                await loginUser(email, password);
+                await loginUser(email, password, userType);
             } else {
-                await registerUser(email, password);
+                await registerUser(email, password, name, userType);
             }
 
             setTimeout(() => {
@@ -41,6 +42,17 @@ const LoginScreen: React.FC = () => {
             <Text style={styles.title}>
                 {isLogin ? "Login" : "Cadastro"}
             </Text>
+
+            {!isLogin && (
+                <TextInput
+                    style={styles.input}
+                    placeholder="Nome Completo"
+                    value={name}
+                    onChangeText={setName}
+                    keyboardType="default"
+                    autoCapitalize="words"
+                />
+            )}
 
             <TextInput
                 style={styles.input}
