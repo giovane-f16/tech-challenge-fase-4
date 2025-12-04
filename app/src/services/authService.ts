@@ -8,12 +8,14 @@ export const loginUser = async (email: string, password: string, userType: "prof
 
     // Verificar se o tipo de usuário corresponde ao armazenado no Firestore
     const userDoc = await getDoc(doc(db, "users", userCredential.user.uid));
-    if (userDoc.exists()) {
-        const userData = userDoc.data();
-        if (userData.userType !== userType) {
-            await signOut(auth);
-            throw new Error(`Este usuário está registrado como ${userData.userType}, não como ${userType}`);
-        }
+    if (!userDoc.exists()) {
+        throw new Error("Dados do usuário não encontrados.");
+    }
+
+    const userData = userDoc.data();
+    if (userData.userType !== userType) {
+        await signOut(auth);
+        throw new Error(`Este usuário está registrado como ${userData.userType}, não como ${userType}`);
     }
 
     return userCredential.user;
