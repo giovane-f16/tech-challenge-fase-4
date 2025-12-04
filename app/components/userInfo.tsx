@@ -1,8 +1,7 @@
-import { auth, db } from "@/app/src/Config/firebase";
-import { logoutUser } from "@/app/src/Services/authService";
+import { auth } from "@/app/src/Config/firebase";
+import { getUserData, logoutUser } from "@/app/src/Services/authService";
 import { router } from "expo-router";
 import { User, onAuthStateChanged } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
@@ -25,20 +24,14 @@ const UserInfo: React.FC = () => {
         if (!user || !user.uid) return;
 
         try {
-            // Buscar diretamente pelo ID do documento
-            const userDocRef = doc(db, "users", user.uid);
-            const userDoc = await getDoc(userDocRef);
-
-            if (userDoc.exists()) {
-                const userData = userDoc.data();
-                setUserName(userData.name || user.email?.split("@")[0] || "Usuário");
-            } else {
-                // Se não encontrar no Firestore, usa o email
+            const userData = await getUserData();
+            if (!userData || !userData.name) {
                 setUserName(user.email?.split("@")[0] || "Usuário");
             }
+
+            setUserName(userData?.name || user.email?.split("@")[0] || "Usuário");
         } catch (error) {
             console.error("Erro ao carregar nome do usuário:", error);
-            // Em caso de erro, usa o email como fallback
             if (user.email) {
                 setUserName(user.email.split("@")[0]);
             }

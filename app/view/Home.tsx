@@ -3,8 +3,9 @@ import EditButton from "@/app/components/edit";
 import { HomeController } from "@/app/src/Controller/home";
 import { PostModel } from "@/app/src/Model/post";
 import { PostProvider } from "@/app/src/Provider/post";
-import { useRouter } from "expo-router";
-import React, { useEffect, useState } from "react";
+import { getUserData } from "@/app/src/Services/authService";
+import { useFocusEffect, useRouter } from "expo-router";
+import React, { useCallback, useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, Image, RefreshControl, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function Home() {
@@ -13,7 +14,7 @@ export default function Home() {
     const [loading, setLoading] = useState<boolean>(true);
     const [refreshing, setRefreshing] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
-
+    const [user, setUser] = useState<{ name: string; email: string; userType: string } | null>(null);
     const postProvider   = new PostProvider();
     const homeController = new HomeController(postProvider);
 
@@ -32,8 +33,15 @@ export default function Home() {
     };
 
     useEffect(() => {
+        getUserData().then(setUser);
         loadPosts();
     }, []);
+
+    useFocusEffect(
+        useCallback(() => {
+            getUserData().then(setUser);
+        }, [])
+    );
 
     const onRefresh = () => {
         setRefreshing(true);
@@ -57,10 +65,12 @@ export default function Home() {
                 resizeMode="cover"
             />
 
+            {user?.userType === "professor" && (
             <View style={styles.buttonsContainer}>
                 <EditButton post={item} />
                 <DeleteButton postId={item.getId()} />
             </View>
+            )}
 
             <View style={styles.postContent}>
                 <Text style={styles.postTitle} numberOfLines={2}>
