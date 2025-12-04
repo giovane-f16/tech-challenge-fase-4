@@ -1,10 +1,12 @@
 import { getProfessors } from "@/app/src/Services/professorService";
+import { useFocusEffect } from "@react-navigation/native";
 import { router } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { ActivityIndicator, Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface Professor {
     docId: string;
+    uid: string;
     name: string;
     email: string;
     createdAt: string;
@@ -14,9 +16,11 @@ const ProfessoresScreen: React.FC = () => {
     const [professors, setProfessors] = useState<Professor[]>([]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        loadProfessors();
-    }, []);
+    useFocusEffect(
+        useCallback(() => {
+            loadProfessors();
+        }, [])
+    );
 
     const loadProfessors = async () => {
         try {
@@ -39,7 +43,7 @@ const ProfessoresScreen: React.FC = () => {
             pathname: "/view/admin/edit-professor/[id]",
             params: {
                 id: professor.docId,
-                email: professor.email,
+                email: professor.email
             },
         });
     };

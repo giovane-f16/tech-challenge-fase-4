@@ -1,11 +1,12 @@
-import { deleteUserAccount, isSuperAdmin, updateUserEmail, updateUserPassword } from "@/app/src/Services/authService";
+import { Config } from "@/app/src/Config/config";
+import { isSuperAdmin, updateUserEmail, updateUserPassword } from "@/app/src/Services/authService";
 import { deleteProfessor } from "@/app/src/Services/professorService";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 const EditProfessorScreen: React.FC = () => {
-    const { id, email: initialEmail } = useLocalSearchParams<{ id: string; email: string }>();
+    const { id, email: initialEmail } = useLocalSearchParams<{ id: string; email: string; }>();
     const [email, setEmail] = useState(initialEmail || "");
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
@@ -84,6 +85,12 @@ const EditProfessorScreen: React.FC = () => {
     };
 
     const handleDelete = () => {
+        // Bloqueia tentativa de excluir o Super Admin
+        const SUPER_ADMIN_EMAIL = Config.getSuperAdminEmail();
+        if (initialEmail === SUPER_ADMIN_EMAIL) {
+            Alert.alert("Ação não permitida", "O super admin não pode ser excluído.");
+            return;
+        }
         Alert.alert(
             "Excluir Professor",
             "Tem certeza que deseja excluir este professor? Esta ação não pode ser desfeita.",
@@ -107,28 +114,16 @@ const EditProfessorScreen: React.FC = () => {
 
         setLoading(true);
         try {
-            // Se não for admin, precisa deletar do Auth (requer senha)
-            if (!isAdmin) {
-                await deleteUserAccount(currentPassword);
-            }
-
-            // Deletar do Firestore (sempre necessário)
             await deleteProfessor(id);
 
             Alert.alert("Sucesso", "Professor excluído com sucesso!", [
                 {
                     text: "OK",
-                    onPress: () => router.back(),
+                    onPress: () => router.replace("/view/admin/professores"),
                 },
             ]);
         } catch (error: any) {
-            let errorMessage = "Erro ao excluir professor";
-
-            if (error.code === "auth/wrong-password") {
-                errorMessage = "Senha incorreta";
-            }
-
-            Alert.alert("Erro", errorMessage);
+            Alert.alert("Erro", error.message || "Erro ao excluir professor");
         } finally {
             setLoading(false);
         }
@@ -215,7 +210,7 @@ const EditProfessorScreen: React.FC = () => {
 
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>Zona de Perigo</Text>
-                    {!isAdmin && (
+                    {!isAdmin && ( // @toDo: melhorar código aqui
                         <>
                             <Text style={styles.label}>Senha Atual (para confirmar exclusão)</Text>
                             <TextInput
@@ -228,27 +223,24 @@ const EditProfessorScreen: React.FC = () => {
                             />
                         </>
                     )}
-                    {isAdmin && (
-                        <Text style={styles.adminNote}>
-                            Como super admin, você pode excluir sem precisar de senha.
-                        </Text>
+                    {initialEmail !== Config.getSuperAdminEmail() && (
+                        <TouchableOpacity
+                            style={[styles.deleteButton, loading && styles.buttonDisabled]}
+                            onPress={handleDelete}
+                            disabled={loading}
+                        >
+                            {loading ? (
+                                <ActivityIndicator color="#fff" />
+                            ) : (
+                                <Text style={styles.deleteButtonText}>Excluir Professor</Text>
+                            )}
+                        </TouchableOpacity>
                     )}
-                    <TouchableOpacity
-                        style={[styles.deleteButton, loading && styles.buttonDisabled]}
-                        onPress={handleDelete}
-                        disabled={loading}
-                    >
-                        {loading ? (
-                            <ActivityIndicator color="#fff" />
-                        ) : (
-                            <Text style={styles.deleteButtonText}>Excluir Professor</Text>
-                        )}
-                    </TouchableOpacity>
                 </View>
 
                 <TouchableOpacity
                     style={styles.cancelButton}
-                    onPress={() => router.back()}
+                    onPress={() => router.replace("/view/admin/professores")}
                     disabled={loading}
                 >
                     <Text style={styles.cancelButtonText}>Voltar</Text>

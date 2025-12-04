@@ -1,4 +1,4 @@
-import { createProfessor } from "@/app/src/Services/professorService";
+import { registerUser } from "@/app/src/Services/authService";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -40,11 +40,11 @@ const CreateProfessorScreen: React.FC = () => {
         setLoading(true);
 
         try {
-            await createProfessor(name, email, password);
+            await registerUser(email, password, name, "professor");
             Alert.alert("Sucesso", "Professor criado com sucesso!", [
                 {
                     text: "OK",
-                    onPress: () => router.back(),
+                    onPress: () => router.replace("/view/admin/professores"),
                 },
             ]);
         } catch (error: any) {

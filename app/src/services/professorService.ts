@@ -1,6 +1,5 @@
-import { auth, db } from "@/app/src/Config/firebase";
-import { createUserWithEmailAndPassword, User } from "firebase/auth";
-import { addDoc, collection, deleteDoc, doc, getDocs, query, Timestamp, where } from "firebase/firestore";
+import { db } from "@/app/src/Config/firebase";
+import { collection, deleteDoc, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 
 export interface UserApp {
     docId: string;  // ID do documento no Firestore
@@ -13,26 +12,8 @@ export interface UserApp {
 
 const COLLECTION = "users";
 
-export const createProfessor = async (name: string, email: string, password: string): Promise<User> => {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-
-    await addDoc(collection(db, COLLECTION), {
-        uid: user.uid,
-        name: name,
-        email: user.email,
-        createdAt: Timestamp.now(),
-        userType: "professor",
-    });
-
-    return user;
-};
-
 export const getProfessors = async (): Promise<UserApp[]> => {
-    const q = query(
-        collection(db, COLLECTION),
-        where("userType", "==", "professor")
-    );
+    const q = query(collection(db, COLLECTION),where("userType", "==", "professor"));
     const querySnapshot = await getDocs(q);
 
     const professors: UserApp[] = [];
@@ -53,13 +34,11 @@ export const getProfessors = async (): Promise<UserApp[]> => {
     return professors;
 };
 
-export const deleteProfessor = async (uid: string): Promise<void> => {
-    const q = query(collection(db, COLLECTION));
-    const querySnapshot = await getDocs(q);
-
-    querySnapshot.forEach(async (document) => {
-        if (document.data().uid === uid) {
-            await deleteDoc(doc(db, COLLECTION, document.id)); // Nota: Para deletar do Auth, o usuário precisa estar autenticado
-        }
-    });
+export const deleteProfessor = async (docId: string): Promise<void> => {
+    const ref = doc(db, COLLECTION, docId);
+    const snap = await getDoc(ref);
+    if (!snap.exists()) {
+        throw new Error("Professor não encontrado");
+    }
+    await deleteDoc(ref);
 };
