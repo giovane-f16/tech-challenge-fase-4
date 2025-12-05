@@ -83,7 +83,11 @@ export const deleteUserAccount = async (currentPassword: string): Promise<void> 
 };
 
 export const getUserData = async (): Promise<{ name: string; email: string; userType: string } | null> => {
-    const userDoc = await getDoc(doc(db, "users", getCurrentUser()?.uid || ""));
+    const current = getCurrentUser();
+    if (!current || !current.uid) {
+        return null;
+    }
+    const userDoc = await getDoc(doc(db, "users", current.uid));
     if (!userDoc.exists()) {
         return null;
     }

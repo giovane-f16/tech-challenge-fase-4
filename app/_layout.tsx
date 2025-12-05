@@ -1,9 +1,24 @@
 import UserInfo from "@/app/components/userInfo";
 import BotaoVoltar from "@/app/components/voltar";
+import { auth } from "@/app/src/Config/firebase";
+import { getUserData } from "@/app/src/Services/authService";
 import { Ionicons } from "@expo/vector-icons";
 import { Drawer } from "expo-router/drawer";
+import { onAuthStateChanged } from "firebase/auth";
+import React, { useEffect, useState } from "react";
 
 export default function RootLayout() {
+    const [userData, setUserData] = useState<{ name: string; email: string; userType: string } | null>(null);
+
+    useEffect(() => {
+        getUserData().then(setUserData);
+
+        const unsub = onAuthStateChanged(auth, () => {
+            getUserData().then(setUserData);
+        });
+        return () => unsub();
+    }, []);
+
     return (
         <Drawer
             screenOptions={{
@@ -46,6 +61,8 @@ export default function RootLayout() {
                     ),
                 }}
             />
+
+            {userData?.userType === "professor" && (
             <Drawer.Screen
                 name="view/post/create"
                 options={{
@@ -60,6 +77,9 @@ export default function RootLayout() {
                     },
                 }}
             />
+            )}
+
+            {userData?.userType === "professor" && (
             <Drawer.Screen
                 name="view/admin/professores"
                 options={{
@@ -71,6 +91,8 @@ export default function RootLayout() {
                     ),
                 }}
             />
+            )}
+
             <Drawer.Screen
                 name="view/post/[id]"
                 options={{
