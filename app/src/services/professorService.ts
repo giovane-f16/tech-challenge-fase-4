@@ -1,5 +1,6 @@
-import { db } from "@/app/src/Config/firebase";
-import { collection, deleteDoc, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import { Config } from "@/app/src/Config/config";
+import { auth, db } from "@/app/src/Config/firebase";
+import { collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, where } from "firebase/firestore";
 
 export interface UserApp {
     docId: string;  // ID do documento no Firestore
@@ -13,7 +14,20 @@ export interface UserApp {
 const COLLECTION = "users";
 
 export const getProfessors = async (): Promise<UserApp[]> => {
-    const q = query(collection(db, COLLECTION),where("userType", "==", "professor"));
+    const currentEmail = auth.currentUser?.email || null;
+
+    const excludeEmails = [Config.getSuperAdminEmail()];
+    if (currentEmail && !excludeEmails.includes(currentEmail)) {
+        excludeEmails.push(currentEmail);
+    }
+
+    // Usa not-in para excluir múltiplos emails e ordena por email
+    const q = query(
+        collection(db, COLLECTION),
+        where("userType", "==", "professor"),
+        where("email", "not-in", excludeEmails),
+        orderBy("email")
+    );
     const querySnapshot = await getDocs(q);
 
     const professors: UserApp[] = [];

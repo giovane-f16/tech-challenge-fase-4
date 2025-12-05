@@ -1,22 +1,16 @@
-import { Config } from "@/app/src/Config/config";
-import { isSuperAdmin, updateUserEmail, updateUserPassword } from "@/app/src/Services/authService";
+import { updateUserEmail, updateUserPassword } from "@/app/src/Services/authService";
 import { deleteProfessor } from "@/app/src/Services/professorService";
 import { router, useLocalSearchParams } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 const EditProfessorScreen: React.FC = () => {
-    const { id, email: initialEmail } = useLocalSearchParams<{ id: string; email: string; }>();
-    const [email, setEmail] = useState(initialEmail || "");
+    const { id, email } = useLocalSearchParams<{ id: string; email: string; }>();
+    const [emailAtualizado, setEmailAtualizado] = useState("");
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(false);
-
-    useEffect(() => {
-        setIsAdmin(isSuperAdmin());
-    }, []);
 
     const handleUpdateEmail = async () => {
         if (!email.trim() || !currentPassword.trim()) {
@@ -85,12 +79,6 @@ const EditProfessorScreen: React.FC = () => {
     };
 
     const handleDelete = () => {
-        // Bloqueia tentativa de excluir o Super Admin
-        const SUPER_ADMIN_EMAIL = Config.getSuperAdminEmail();
-        if (initialEmail === SUPER_ADMIN_EMAIL) {
-            Alert.alert("Ação não permitida", "O super admin não pode ser excluído.");
-            return;
-        }
         Alert.alert(
             "Excluir Professor",
             "Tem certeza que deseja excluir este professor? Esta ação não pode ser desfeita.",
@@ -106,12 +94,6 @@ const EditProfessorScreen: React.FC = () => {
     };
 
     const confirmDelete = async () => {
-        // Se for super admin, não precisa de senha
-        if (!isAdmin && !currentPassword.trim()) {
-            Alert.alert("Erro", "Digite a senha atual para confirmar a exclusão");
-            return;
-        }
-
         setLoading(true);
         try {
             await deleteProfessor(id);
@@ -135,14 +117,17 @@ const EditProfessorScreen: React.FC = () => {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
             <ScrollView contentContainerStyle={styles.scrollContent}>
+                <View>
+                    <Text style={styles.sectionTitle}>Editar professor - {email}</Text>
+                </View>
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>Alterar Email</Text>
                     <Text style={styles.label}>Novo Email</Text>
                     <TextInput
                         style={styles.input}
                         placeholder="email@exemplo.com"
-                        value={email}
-                        onChangeText={setEmail}
+                        value={emailAtualizado}
+                        onChangeText={setEmailAtualizado}
                         keyboardType="email-address"
                         autoCapitalize="none"
                         editable={!loading}
@@ -210,32 +195,17 @@ const EditProfessorScreen: React.FC = () => {
 
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>Zona de Perigo</Text>
-                    {!isAdmin && ( // @toDo: melhorar código aqui
-                        <>
-                            <Text style={styles.label}>Senha Atual (para confirmar exclusão)</Text>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Digite sua senha"
-                                value={currentPassword}
-                                onChangeText={setCurrentPassword}
-                                secureTextEntry
-                                editable={!loading}
-                            />
-                        </>
-                    )}
-                    {initialEmail !== Config.getSuperAdminEmail() && (
-                        <TouchableOpacity
-                            style={[styles.deleteButton, loading && styles.buttonDisabled]}
-                            onPress={handleDelete}
-                            disabled={loading}
-                        >
-                            {loading ? (
-                                <ActivityIndicator color="#fff" />
-                            ) : (
-                                <Text style={styles.deleteButtonText}>Excluir Professor</Text>
-                            )}
-                        </TouchableOpacity>
-                    )}
+                    <TouchableOpacity
+                        style={[styles.deleteButton, loading && styles.buttonDisabled]}
+                        onPress={handleDelete}
+                        disabled={loading}
+                    >
+                        {loading ? (
+                            <ActivityIndicator color="#fff" />
+                        ) : (
+                            <Text style={styles.deleteButtonText}>Excluir Professor</Text>
+                        )}
+                    </TouchableOpacity>
                 </View>
 
                 <TouchableOpacity

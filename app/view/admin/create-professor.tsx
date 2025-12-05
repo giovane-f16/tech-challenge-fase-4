@@ -41,7 +41,7 @@ const CreateProfessorScreen: React.FC = () => {
 
         try {
             await registerUser(email, password, name, "professor");
-            Alert.alert("Sucesso", "Professor criado com sucesso!", [
+            Alert.alert("Sucesso", "Professor criado e autenticado com sucesso!", [
                 {
                     text: "OK",
                     onPress: () => router.replace("/view/admin/professores"),
