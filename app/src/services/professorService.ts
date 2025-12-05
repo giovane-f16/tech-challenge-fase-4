@@ -56,3 +56,28 @@ export const deleteProfessor = async (docId: string): Promise<void> => {
     }
     await deleteDoc(ref);
 };
+
+export const getAlunos = async (): Promise<UserApp[]> => {
+    const currentEmail = auth.currentUser?.email || null;
+    const consulta = query(
+        collection(db, COLLECTION),
+        where("userType", "==", "aluno"),
+        where("email", "!=", currentEmail)
+    );
+    const querySnapshot = await getDocs(consulta);
+    const alunos: UserApp[] = [];
+
+    querySnapshot.forEach((document) => {
+        const data = document.data();
+        alunos.push({
+            docId: document.id,
+            uid: data.uid,
+            name: data.name || "",
+            email: data.email,
+            createdAt: data.createdAt.toDate().toISOString(),
+            userType: data.userType,
+        });
+    });
+
+    return alunos;
+};

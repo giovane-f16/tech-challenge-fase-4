@@ -94,6 +94,18 @@ export default function RootLayout() {
             )}
 
             <Drawer.Screen
+                name="view/admin/alunos"
+                options={{
+                    title: "Gerenciar",
+                    drawerLabel: "Alunos",
+                    drawerItemStyle: { display: "flex" },
+                    drawerIcon: ({ color, size }) => (
+                        <Ionicons name="people-circle-outline" size={size} color={color} />
+                    ),
+                }}
+            />
+
+            <Drawer.Screen
                 name="view/post/[id]"
                 options={{
                     title: "Detalhes do Post",
