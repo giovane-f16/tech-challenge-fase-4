@@ -1,6 +1,6 @@
 import { registerUser } from "@/app/src/Services/authService";
-import { router } from "expo-router";
-import React, { useState } from "react";
+import { router, useFocusEffect } from "expo-router";
+import React, { useCallback, useState } from "react";
 import {
     ActivityIndicator,
     Alert,
@@ -61,6 +61,15 @@ const CreateProfessorScreen: React.FC = () => {
             setLoading(false);
         }
     };
+
+    useFocusEffect(
+        useCallback(() => {
+            setName("");
+            setEmail("");
+            setPassword("");
+            setConfirmPassword("");
+        }, [])
+    );
 
     return (
         <KeyboardAvoidingView
@@ -124,7 +133,7 @@ const CreateProfessorScreen: React.FC = () => {
 
                     <TouchableOpacity
                         style={styles.cancelButton}
-                        onPress={() => router.back()}
+                        onPress={() => router.replace("/view/admin/professores")}
                         disabled={loading}
                     >
                         <Text style={styles.cancelButtonText}>Cancelar</Text>
