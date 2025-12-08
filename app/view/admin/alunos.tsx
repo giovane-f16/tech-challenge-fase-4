@@ -1,5 +1,5 @@
 import { getAlunos } from "@/app/src/Services/professorService"; // @toDo: Mudar nome do arquivo
-import { useFocusEffect } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import React, { useCallback, useState } from "react";
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
@@ -11,7 +11,6 @@ interface Aluno {
     createdAt: string;
 }
 
-// @toDo: Continuar com a implementação
 const AlunosScreen: React.FC = () => {
     const [alunos, setAlunos] = useState<Array<Aluno>>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -34,13 +33,24 @@ const AlunosScreen: React.FC = () => {
     }
 
     const handleCreateAluno = () => {
+        router.push("/view/admin/create-aluno");
+    }
+
+    const handleEditAluno = (aluno: Aluno) => {
+        router.push({
+            pathname: "/view/admin/edit-aluno/[id]",
+            params: {
+                id: aluno.docId,
+                email: aluno.email
+            }
+        });
     }
 
     const renderAluno = ( { item }: { item: Aluno } ) => {
         return (
             <TouchableOpacity
                 style={styles.professorCard}
-                onPress={() => {}}
+                onPress={() => handleEditAluno(item)}
             >
                 <View style={styles.professorInfo}>
                     <Text style={styles.professorName}>{item.name}</Text>
@@ -164,4 +174,5 @@ const styles = StyleSheet.create({
         color: "#999",
     },
 });
+
 export default AlunosScreen;
