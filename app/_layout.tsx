@@ -96,7 +96,7 @@ export default function RootLayout() {
             <Drawer.Screen
                 name="view/admin/alunos"
                 options={{
-                    title: "Gerenciar",
+                    title: "Gerenciar Alunos",
                     drawerLabel: "Alunos",
                     drawerItemStyle: { display: "flex" },
                     drawerIcon: ({ color, size }) => (
@@ -138,6 +138,24 @@ export default function RootLayout() {
                     title: "Editar Professor",
                     headerLeft: () => {
                         return <BotaoVoltar caminho={"/view/admin/professores"} />
+                    },
+                }}
+            />
+            <Drawer.Screen
+                name="view/admin/create-aluno"
+                options={{
+                    title: "Novo Aluno",
+                    headerLeft: () => {
+                        return <BotaoVoltar caminho={"/view/admin/alunos"} />
+                    },
+                }}
+            />
+            <Drawer.Screen
+                name="view/admin/edit-aluno/[id]"
+                options={{
+                    title: "Editar Aluno",
+                    headerLeft: () => {
+                        return <BotaoVoltar caminho={"/view/admin/alunos"} />
                     },
                 }}
             />
