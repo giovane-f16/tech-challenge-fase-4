@@ -90,3 +90,5 @@ export const deleteAluno = async (docId: string): Promise<void> => {
     }
     await deleteDoc(ref);
 };
+
+export default { getProfessores, deleteProfessor, getAlunos, deleteAluno };

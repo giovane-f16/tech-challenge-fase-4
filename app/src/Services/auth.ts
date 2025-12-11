@@ -99,3 +99,5 @@ export const getUserData = async (): Promise<{ name: string; email: string; user
         userType: userData.userType,
     };
 };
+
+export default { loginUser, registerUser, logoutUser, getCurrentUser, isSuperAdmin, updateUserEmail, updateUserPassword, deleteUserAccount, getUserData };
