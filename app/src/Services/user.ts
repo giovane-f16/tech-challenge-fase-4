@@ -13,7 +13,7 @@ export interface UserApp {
 
 const COLLECTION = "users";
 
-export const getProfessors = async (): Promise<UserApp[]> => {
+export const getProfessores = async (): Promise<UserApp[]> => {
     const currentEmail = auth.currentUser?.email || null;
 
     const excludeEmails = [Config.getSuperAdminEmail()];
@@ -57,16 +57,6 @@ export const deleteProfessor = async (docId: string): Promise<void> => {
     await deleteDoc(ref);
 };
 
-// @toDo: Remover duplicidade
-export const deleteAluno = async (docId: string): Promise<void> => {
-    const ref = doc(db, COLLECTION, docId);
-    const snap = await getDoc(ref);
-    if (!snap.exists()) {
-        throw new Error("Aluno não encontrado");
-    }
-    await deleteDoc(ref);
-};
-
 export const getAlunos = async (): Promise<UserApp[]> => {
     const currentEmail = auth.currentUser?.email || null;
     const consulta = query(
@@ -90,4 +80,13 @@ export const getAlunos = async (): Promise<UserApp[]> => {
     });
 
     return alunos;
+};
+
+export const deleteAluno = async (docId: string): Promise<void> => {
+    const ref = doc(db, COLLECTION, docId);
+    const snap = await getDoc(ref);
+    if (!snap.exists()) {
+        throw new Error("Aluno não encontrado");
+    }
+    await deleteDoc(ref);
 };

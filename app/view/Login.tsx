@@ -1,4 +1,4 @@
-import { loginUser, registerUser } from "@/app/src/Services/authService";
+import { loginUser, registerUser } from "@/app/src/Services/auth";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { ActivityIndicator, Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";

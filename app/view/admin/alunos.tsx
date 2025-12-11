@@ -1,4 +1,4 @@
-import { getAlunos } from "@/app/src/Services/professorService"; // @toDo: Mudar nome do arquivo
+import { getAlunos } from "@/app/src/Services/user";
 import { router, useFocusEffect } from "expo-router";
 import React, { useCallback, useState } from "react";
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";

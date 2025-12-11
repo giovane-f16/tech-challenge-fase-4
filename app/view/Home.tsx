@@ -3,7 +3,7 @@ import EditButton from "@/app/components/edit";
 import { HomeController } from "@/app/src/Controller/home";
 import { PostModel } from "@/app/src/Model/post";
 import { PostProvider } from "@/app/src/Provider/post";
-import { getUserData } from "@/app/src/Services/authService";
+import { getUserData } from "@/app/src/Services/auth";
 import { useFocusEffect, useRouter } from "expo-router";
 import React, { useCallback, useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, Image, RefreshControl, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";

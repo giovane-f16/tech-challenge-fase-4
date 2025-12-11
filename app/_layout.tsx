@@ -1,7 +1,7 @@
 import UserInfo from "@/app/components/userInfo";
 import BotaoVoltar from "@/app/components/voltar";
 import { auth } from "@/app/src/Config/firebase";
-import { getUserData } from "@/app/src/Services/authService";
+import { getUserData } from "@/app/src/Services/auth";
 import { Ionicons } from "@expo/vector-icons";
 import { Drawer } from "expo-router/drawer";
 import { onAuthStateChanged } from "firebase/auth";

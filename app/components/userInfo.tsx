@@ -1,5 +1,5 @@
 import { auth } from "@/app/src/Config/firebase";
-import { getUserData, logoutUser } from "@/app/src/Services/authService";
+import { getUserData, logoutUser } from "@/app/src/Services/auth";
 import { router } from "expo-router";
 import { User, onAuthStateChanged } from "firebase/auth";
 import React, { useEffect, useState } from "react";

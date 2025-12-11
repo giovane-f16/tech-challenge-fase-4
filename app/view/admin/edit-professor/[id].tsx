@@ -1,5 +1,5 @@
-import { updateUserEmail, updateUserPassword } from "@/app/src/Services/authService";
-import { deleteProfessor } from "@/app/src/Services/professorService";
+import { updateUserEmail, updateUserPassword } from "@/app/src/Services/auth";
+import { deleteProfessor } from "@/app/src/Services/user";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";

@@ -1,4 +1,4 @@
-import { registerUser } from "@/app/src/Services/authService";
+import { registerUser } from "@/app/src/Services/auth";
 import { router, useFocusEffect } from "expo-router";
 import React, { useCallback, useState } from "react";
 import {

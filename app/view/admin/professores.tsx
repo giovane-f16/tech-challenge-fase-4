@@ -1,4 +1,4 @@
-import { getProfessors } from "@/app/src/Services/professorService";
+import { getProfessores } from "@/app/src/Services/user";
 import { useFocusEffect } from "@react-navigation/native";
 import { router } from "expo-router";
 import React, { useCallback, useState } from "react";
@@ -24,7 +24,7 @@ const ProfessoresScreen: React.FC = () => {
 
     const loadProfessors = async () => {
         try {
-            const data = await getProfessors();
+            const data = await getProfessores();
             setProfessors(data);
         } catch (error) {
             console.error("Erro ao carregar professores:", error);
