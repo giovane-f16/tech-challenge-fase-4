@@ -59,16 +59,21 @@ export class PostModel implements Post {
         return this.data_criacao;
     }
 
-    getThumbnailId(): string {
-        return this.thumbnail_id || "";
+    getThumbnailId(): string | undefined {
+        return this.thumbnail_id;
     }
 
     getThumbnail(): string {
         if (!this.thumbnail) {
-            let thumbnail = `${Config.getApiEndpoint()}/posts/${this.getId()}/thumbnail/${this.getThumbnailId()}`;
-            return thumbnail;
+            return `${Config.getApiEndpoint()}/posts/${this.getId()}/thumbnail/${this.getThumbnailId()}`;
         }
-        return this.thumbnail;
+
+        if (this.thumbnail.startsWith("http") || this.thumbnail.startsWith("data:")) {
+            return this.thumbnail;
+        }
+
+        const prefix = this.thumbnail.startsWith("/") ? "" : "/";
+        return `${Config.getApiEndpoint()}${prefix}${this.thumbnail}`;
     }
 
     getDataAtualizacao(): Date | undefined {
@@ -83,6 +88,7 @@ export class PostModel implements Post {
             autor: this.autor,
             data_criacao: this.data_criacao,
             thumbnail: this.thumbnail,
+            thumbnail_id: this.thumbnail_id,
             data_atualizacao: this.data_atualizacao,
         };
     }

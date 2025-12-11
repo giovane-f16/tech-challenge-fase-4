@@ -38,6 +38,7 @@ export default function PostDetails() {
             if (typeof postParam === "string") {
                 const parsedPost = JSON.parse(postParam);
                 const postModel = postController.getPostByItem(parsedPost);
+
                 setPost(postModel);
                 setLoading(false);
                 return;
@@ -48,6 +49,8 @@ export default function PostDetails() {
         } catch (err) {
             setError("Erro ao carregar post. Tente novamente.");
             console.error(err);
+            setLoading(false);
+        } finally {
             setLoading(false);
         }
     };
