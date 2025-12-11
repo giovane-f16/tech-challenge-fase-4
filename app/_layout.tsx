@@ -62,13 +62,12 @@ export default function RootLayout() {
                 }}
             />
 
-            {userData?.userType === "professor" && (
             <Drawer.Screen
                 name="view/post/create"
                 options={{
                     title: "Novo Post",
                     drawerLabel: "Novo Post",
-                    drawerItemStyle: { display: "flex" },
+                    drawerItemStyle: userData?.userType === "professor" ? { display: "flex" } : { display: "none" },
                     drawerIcon: ({ color, size }) => (
                         <Ionicons name="add-circle-outline" size={size} color={color} />
                     ),
@@ -77,21 +76,18 @@ export default function RootLayout() {
                     },
                 }}
             />
-            )}
 
-            {userData?.userType === "professor" && (
             <Drawer.Screen
                 name="view/admin/professores"
                 options={{
                     title: "Gerenciar",
                     drawerLabel: "Professores",
-                    drawerItemStyle: { display: "flex" },
+                    drawerItemStyle: userData?.userType === "professor" ? { display: "flex" } : { display: "none" },
                     drawerIcon: ({ color, size }) => (
                         <Ionicons name="people-outline" size={size} color={color} />
                     ),
                 }}
             />
-            )}
 
             <Drawer.Screen
                 name="view/admin/alunos"
