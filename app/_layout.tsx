@@ -80,7 +80,8 @@ export default function RootLayout() {
             <Drawer.Screen
                 name="view/admin/professores"
                 options={{
-                    title: "Gerenciar",
+                    title: "Professores",
+                    headerTitleStyle: { fontSize: 18 },
                     drawerLabel: "Professores",
                     drawerItemStyle: userData?.userType === "professor" ? { display: "flex" } : { display: "none" },
                     drawerIcon: ({ color, size }) => (
@@ -92,7 +93,7 @@ export default function RootLayout() {
             <Drawer.Screen
                 name="view/admin/alunos"
                 options={{
-                    title: "Gerenciar Alunos",
+                    title: "Alunos",
                     drawerLabel: "Alunos",
                     drawerItemStyle: { display: "flex" },
                     drawerIcon: ({ color, size }) => (
@@ -104,7 +105,7 @@ export default function RootLayout() {
             <Drawer.Screen
                 name="view/post/[id]"
                 options={{
-                    title: "Detalhes do Post",
+                    title: "Post",
                     headerLeft: () => {
                         return <BotaoVoltar />
                     },
