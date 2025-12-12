@@ -5,10 +5,11 @@ import React from "react";
 import { Alert, StyleSheet, Text, TouchableOpacity } from "react-native";
 
 interface DeleteButtonProps {
-    postId: string
+    postId: string;
+    onDelete?: () => void;
 }
 
-const deleteButton = ({ postId }: DeleteButtonProps) => {
+const deleteButton = ({ postId, onDelete }: DeleteButtonProps) => {
     const router = useRouter();
     const postProvider = new PostProvider();
 
@@ -34,8 +35,10 @@ const deleteButton = ({ postId }: DeleteButtonProps) => {
         try {
             await postProvider.deletePost(postId);
             Alert.alert("Sucesso", "Post excluído com sucesso!");
-            router.dismissAll();
-            router.replace("/");
+
+            if (onDelete) {
+                onDelete();
+            }
         } catch (error) {
             Alert.alert("Erro", "Falha ao excluir o post. Tente novamente.");
             console.error(error);

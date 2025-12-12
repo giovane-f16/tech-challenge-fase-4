@@ -40,6 +40,7 @@ export default function Home() {
     useFocusEffect(
         useCallback(() => {
             getUserData().then(setUser);
+            loadPosts();
         }, [])
     );
 
@@ -68,7 +69,7 @@ export default function Home() {
             {user?.userType === "professor" && (
             <View style={styles.buttonsContainer}>
                 <EditButton post={item} />
-                <DeleteButton postId={item.getId()} />
+                <DeleteButton postId={item.getId()} onDelete={loadPosts} />
             </View>
             )}
 
