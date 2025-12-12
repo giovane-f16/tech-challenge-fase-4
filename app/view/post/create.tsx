@@ -93,6 +93,13 @@ export default function CreatePost() {
             Alert.alert("Erro", "Falha ao criar o post. Tente novamente.");
             console.error(error);
         } finally {
+            setFormData({
+                titulo: "",
+                conteudo: "",
+                autor: "",
+                thumbnail: ""
+            });
+            setImageUri(null);
             setLoading(false);
         }
     };
