@@ -47,6 +47,7 @@ const LoginScreen: React.FC = () => {
                 <TextInput
                     style={styles.input}
                     placeholder="Nome Completo"
+                    placeholderTextColor="#999999"
                     value={name}
                     onChangeText={setName}
                     keyboardType="default"
@@ -57,6 +58,7 @@ const LoginScreen: React.FC = () => {
             <TextInput
                 style={styles.input}
                 placeholder="Email"
+                placeholderTextColor="#999999"
                 value={email}
                 onChangeText={setEmail}
                 keyboardType="email-address"
@@ -66,6 +68,7 @@ const LoginScreen: React.FC = () => {
             <TextInput
                 style={styles.input}
                 placeholder="Senha"
+                placeholderTextColor="#999999"
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
