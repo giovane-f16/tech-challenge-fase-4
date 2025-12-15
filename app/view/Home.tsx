@@ -6,7 +6,7 @@ import { PostProvider } from "@/app/src/Provider/post";
 import { getUserData } from "@/app/src/Services/auth";
 import { useFocusEffect, useRouter } from "expo-router";
 import React, { useCallback, useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, Image, RefreshControl, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, BackHandler, FlatList, Image, RefreshControl, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function Home() {
     const router = useRouter();
@@ -35,6 +35,13 @@ export default function Home() {
     useEffect(() => {
         getUserData().then(setUser);
         loadPosts();
+
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            router.replace('/view/Home');
+            return true;
+        });
+
+        return () => backHandler.remove();
     }, []);
 
     useFocusEffect(
