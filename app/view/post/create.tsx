@@ -123,6 +123,7 @@ export default function CreatePost() {
                             style={styles.input}
                             keyboardType="default"
                             placeholder="Digite o título do post"
+                            placeholderTextColor="#999999"
                             value={formData.titulo}
                             onChangeText={(text) =>
                                 setFormData({ ...formData, titulo: text })
@@ -137,6 +138,7 @@ export default function CreatePost() {
                             style={styles.input}
                             keyboardType="default"
                             placeholder="Nome do autor"
+                            placeholderTextColor="#999999"
                             value={formData.autor}
                             onChangeText={(text) =>
                                 setFormData({ ...formData, autor: text })
@@ -183,6 +185,7 @@ export default function CreatePost() {
                             style={[styles.input, styles.textArea]}
                             keyboardType="default"
                             placeholder="Escreva o conteúdo do post"
+                            placeholderTextColor="#999999"
                             value={formData.conteudo}
                             onChangeText={(text) =>
                                 setFormData({ ...formData, conteudo: text })
