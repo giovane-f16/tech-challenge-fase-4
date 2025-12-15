@@ -30,6 +30,7 @@ export default function RootLayout() {
                     fontWeight: "bold",
                     fontSize: 20,
                 },
+                headerTitleAlign: "left",
                 drawerActiveTintColor: "#39558eff",
                 drawerInactiveTintColor: "#666",
                 drawerItemStyle: { display: "none" },
