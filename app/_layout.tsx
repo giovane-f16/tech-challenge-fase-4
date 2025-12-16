@@ -28,7 +28,7 @@ export default function RootLayout() {
                 headerTintColor: "#ffffff",
                 headerTitleStyle: {
                     fontWeight: "bold",
-                    fontSize: 20,
+                    fontSize: 18,
                 },
                 headerTitleAlign: "left",
                 drawerActiveTintColor: "#39558eff",
@@ -82,7 +82,6 @@ export default function RootLayout() {
                 name="view/admin/professores"
                 options={{
                     title: "Professores",
-                    headerTitleStyle: { fontSize: 18 },
                     drawerLabel: "Professores",
                     drawerItemStyle: userData?.userType === "professor" ? { display: "flex" } : { display: "none" },
                     drawerIcon: ({ color, size }) => (
