@@ -2,7 +2,7 @@ import { PostModel } from "@/app/src/Model/post";
 import { PostProvider } from "@/app/src/Provider/post";
 import * as ImagePicker from "expo-image-picker";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ActivityIndicator, Alert, Image, KeyboardAvoidingView, Platform, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function Edit() {
@@ -19,6 +19,27 @@ export default function Edit() {
         autor: postData?.getAutor() || "",
         thumbnail: postData?.getThumbnail() || "",
     });
+
+    const loadData = () => {
+        if (!postParam) {
+            return;
+        }
+
+        let postParse = JSON.parse(postParam);
+        let postModel = new PostModel(postParse);
+
+        setFormData({
+            titulo: postModel.getTitulo(),
+            conteudo: postModel.getConteudo(),
+            autor: postModel.getAutor(),
+            thumbnail: postModel.getThumbnail() || "",
+        });
+        setImageUri(postModel.getThumbnail() || null);
+    }
+
+    useEffect(() => {
+        loadData();
+    }, [id, postParam]);
 
     const pickImage = async () => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -129,6 +150,7 @@ export default function Edit() {
             console.error(error);
         }
     };
+
     return (
         <KeyboardAvoidingView
             style={styles.container}
