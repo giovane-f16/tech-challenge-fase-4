@@ -1,4 +1,4 @@
-import { updateNameAccount, updateUserEmail, updateUserPassword } from "@/app/src/Services/auth";
+import { updateNameAccount } from "@/app/src/Services/auth";
 import { deleteAluno } from "@/app/src/Services/user";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
@@ -6,78 +6,8 @@ import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView, S
 
 const EditAlunoScreen: React.FC = () => {
     const { id, email, name } = useLocalSearchParams<{ id: string; email: string; name: string}>();
-    const [emailAtualizado, setEmailAtualizado] = useState("");
-    const [currentPassword, setCurrentPassword] = useState("");
-    const [newPassword, setNewPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [nameAtualizado, setNameAtualizado] = useState("");
-
-    const handleUpdateEmail = async () => {
-        if (!email.trim() || !currentPassword.trim()) {
-            Alert.alert("Erro", "Preencha o email e a senha atual");
-            return;
-        }
-
-        setLoading(true);
-
-        try {
-            await updateUserEmail(email, currentPassword);
-            Alert.alert("Sucesso", "Email atualizado com sucesso!");
-            setCurrentPassword("");
-        } catch (error: any) {
-            let errorMessage = "Erro ao atualizar email";
-
-            if (error.code === "auth/wrong-password") {
-                errorMessage = "Senha atual incorreta";
-            } else if (error.code === "auth/email-already-in-use") {
-                errorMessage = "Este email já está em uso";
-            } else if (error.code === "auth/invalid-email") {
-                errorMessage = "Email inválido";
-            }
-
-            Alert.alert("Erro", errorMessage);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleUpdatePassword = async () => {
-        if (!currentPassword.trim() || !newPassword.trim() || !confirmPassword.trim()) {
-            Alert.alert("Erro", "Preencha todos os campos de senha");
-            return;
-        }
-
-        if (newPassword !== confirmPassword) {
-            Alert.alert("Erro", "As novas senhas não coincidem");
-            return;
-        }
-
-        if (newPassword.length < 6) {
-            Alert.alert("Erro", "A nova senha deve ter no mínimo 6 caracteres");
-            return;
-        }
-
-        setLoading(true);
-
-        try {
-            await updateUserPassword(currentPassword, newPassword);
-            Alert.alert("Sucesso", "Senha atualizada com sucesso!");
-            setCurrentPassword("");
-            setNewPassword("");
-            setConfirmPassword("");
-        } catch (error: any) {
-            let errorMessage = "Erro ao atualizar senha";
-
-            if (error.code === "auth/wrong-password") {
-                errorMessage = "Senha atual incorreta";
-            }
-
-            Alert.alert("Erro", errorMessage);
-        } finally {
-            setLoading(false);
-        }
-    };
 
     const handleDelete = () => {
         Alert.alert(
@@ -168,79 +98,6 @@ const EditAlunoScreen: React.FC = () => {
                         <Text style={styles.buttonText}>Atualizar Nome</Text>
                     </TouchableOpacity>
                 </View>
-
-                {/* <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Alterar Email</Text>
-                    <Text style={styles.label}>Novo Email</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="email@exemplo.com"
-                        value={emailAtualizado}
-                        onChangeText={setEmailAtualizado}
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                        editable={!loading}
-                    />
-
-                    <Text style={styles.label}>Senha Atual</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Digite sua senha"
-                        value={currentPassword}
-                        onChangeText={setCurrentPassword}
-                        secureTextEntry
-                        editable={!loading}
-                    />
-
-                    <TouchableOpacity
-                        style={[styles.button, loading && styles.buttonDisabled]}
-                        onPress={handleUpdateEmail}
-                        disabled={loading}
-                    >
-                        <Text style={styles.buttonText}>Atualizar Email</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Alterar Senha</Text>
-                    <Text style={styles.label}>Senha Atual</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Digite sua senha atual"
-                        value={currentPassword}
-                        onChangeText={setCurrentPassword}
-                        secureTextEntry
-                        editable={!loading}
-                    />
-
-                    <Text style={styles.label}>Nova Senha</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Mínimo 6 caracteres"
-                        value={newPassword}
-                        onChangeText={setNewPassword}
-                        secureTextEntry
-                        editable={!loading}
-                    />
-
-                    <Text style={styles.label}>Confirmar Nova Senha</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Digite a nova senha novamente"
-                        value={confirmPassword}
-                        onChangeText={setConfirmPassword}
-                        secureTextEntry
-                        editable={!loading}
-                    />
-
-                    <TouchableOpacity
-                        style={[styles.button, loading && styles.buttonDisabled]}
-                        onPress={handleUpdatePassword}
-                        disabled={loading}
-                    >
-                        <Text style={styles.buttonText}>Atualizar Senha</Text>
-                    </TouchableOpacity>
-                </View> */}
 
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>Zona de Perigo</Text>
