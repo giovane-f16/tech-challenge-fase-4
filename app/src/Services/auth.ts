@@ -87,7 +87,7 @@ export const deleteUserAccount = async (currentPassword: string): Promise<void> 
     await deleteUser(user);
 };
 
-export const getUserData = async (): Promise<{ name: string; email: string; userType: string } | null> => {
+export const getUserData = async (): Promise<{ name: string; email: string; userType: string; id: string } | null> => {
     const current = getCurrentUser();
     if (!current || !current.uid) {
         return null;
@@ -98,10 +98,12 @@ export const getUserData = async (): Promise<{ name: string; email: string; user
     }
 
     const userData = userDoc.data();
+
     return {
         name: userData.name,
         email: userData.email,
         userType: userData.userType,
+        id: current.uid,
     };
 };
 

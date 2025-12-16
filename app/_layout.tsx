@@ -64,6 +64,18 @@ export default function RootLayout() {
             />
 
             <Drawer.Screen
+                name="view/Perfil"
+                options={{
+                    title: "Meu Perfil",
+                    drawerLabel: "Meu Perfil",
+                    drawerItemStyle: { display: "flex" },
+                    drawerIcon: ({ color, size }) => (
+                        <Ionicons name="person-circle-outline" size={size} color={color} />
+                    ),
+                }}
+            />
+
+            <Drawer.Screen
                 name="view/post/create"
                 options={{
                     title: "Novo Post",
