@@ -43,7 +43,8 @@ const ProfessoresScreen: React.FC = () => {
             pathname: "/view/admin/edit-professor/[id]",
             params: {
                 id: professor.docId,
-                email: professor.email
+                email: professor.email,
+                name: professor.name,
             },
         });
     };
