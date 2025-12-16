@@ -27,25 +27,21 @@ export default function PostDetails() {
     const loadPost = async () => {
         try {
             setError(null);
-
+            setLoading(true);
             if (!postParam) {
                 const data = await postController.getPostById(id);
                 setPost(data);
-                setLoading(false);
                 return;
             }
 
             if (typeof postParam === "string") {
                 const parsedPost = JSON.parse(postParam);
                 const postModel = postController.getPostByItem(parsedPost);
-
                 setPost(postModel);
-                setLoading(false);
                 return;
             }
 
             setError("Dados do post inválidos.");
-            setLoading(false);
         } catch (err) {
             setError("Erro ao carregar post. Tente novamente.");
             console.error(err);
@@ -92,6 +88,7 @@ export default function PostDetails() {
                 contentContainerStyle={styles.scrollContent}
             >
                 <Image
+                    key={post.getThumbnail()}
                     source={{ uri: post.getThumbnail() }}
                     style={styles.thumbnail}
                     resizeMode="cover"
