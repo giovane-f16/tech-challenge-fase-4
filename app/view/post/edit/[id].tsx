@@ -143,8 +143,7 @@ export default function Edit() {
         try {
             await postProvider.deletePost(id);
             Alert.alert("Sucesso", "Post excluído com sucesso!");
-            router.dismissAll();
-            router.replace("/");
+            router.replace("/view/Home");
         } catch (error) {
             Alert.alert("Erro", "Falha ao excluir o post. Tente novamente.");
             console.error(error);
