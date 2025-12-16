@@ -71,6 +71,11 @@ export const updateUserPassword = async (currentPassword: string, newPassword: s
     await updatePassword(user, newPassword);
 };
 
+export const updateNameAccount = async ( uid: string, newName: string): Promise<void> => {
+    const userDocRef = doc(db, "users", uid);
+    await setDoc(userDocRef, { name: newName }, { merge: true });
+}
+
 export const deleteUserAccount = async (currentPassword: string): Promise<void> => {
     const user = auth.currentUser;
     if (!user || !user.email) throw new Error("Usuário não autenticado");

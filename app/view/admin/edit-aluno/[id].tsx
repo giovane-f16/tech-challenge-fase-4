@@ -1,16 +1,17 @@
-import { updateUserEmail, updateUserPassword } from "@/app/src/Services/auth";
+import { updateNameAccount, updateUserEmail, updateUserPassword } from "@/app/src/Services/auth";
 import { deleteAluno } from "@/app/src/Services/user";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 const EditAlunoScreen: React.FC = () => {
-    const { id, email } = useLocalSearchParams<{ id: string; email: string; }>();
+    const { id, email, name } = useLocalSearchParams<{ id: string; email: string; name: string}>();
     const [emailAtualizado, setEmailAtualizado] = useState("");
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const [nameAtualizado, setNameAtualizado] = useState("");
 
     const handleUpdateEmail = async () => {
         if (!email.trim() || !currentPassword.trim()) {
@@ -111,16 +112,64 @@ const EditAlunoScreen: React.FC = () => {
         }
     };
 
+    const handleUpdateName = async () => {
+        if (!nameAtualizado.trim()) {
+            Alert.alert("Erro", "O nome não pode estar vazio");
+            return;
+        }
+
+        try {
+            await updateNameAccount(id, nameAtualizado);
+            Alert.alert("Sucesso", "Nome atualizado com sucesso!", [
+                {
+                    text: "OK",
+                    onPress: () => router.replace("/view/admin/alunos"),
+                },
+            ]);
+            setNameAtualizado("");
+        } catch (error) {
+            Alert.alert("Erro", "Erro ao atualizar nome");
+        }
+    }
+
     return (
         <KeyboardAvoidingView
             style={styles.container}
             behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
             <ScrollView contentContainerStyle={styles.scrollContent}>
-                <View>
-                    <Text style={styles.sectionTitle}>Editar Aluno - {email}</Text>
-                </View>
                 <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>Dados do Aluno</Text>
+                    <Text style={styles.sectionText}>
+                        Nome:
+                        <Text style={styles.sectionData}> {name}</Text>
+                    </Text>
+                    <Text style={styles.sectionText}>
+                        Email:
+                        <Text style={styles.sectionData}> {email}</Text>
+                    </Text>
+                </View>
+
+                <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>Alterar Nome</Text>
+                    <Text style={styles.label}>Novo nome</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Digite o novo nome"
+                        value={nameAtualizado}
+                        onChangeText={setNameAtualizado}
+                        editable={!loading}
+                    />
+                    <TouchableOpacity
+                        style={[styles.button, loading && styles.buttonDisabled]}
+                        onPress={handleUpdateName}
+                        disabled={loading}
+                    >
+                        <Text style={styles.buttonText}>Atualizar Nome</Text>
+                    </TouchableOpacity>
+                </View>
+
+                {/* <View style={styles.section}>
                     <Text style={styles.sectionTitle}>Alterar Email</Text>
                     <Text style={styles.label}>Novo Email</Text>
                     <TextInput
@@ -191,7 +240,7 @@ const EditAlunoScreen: React.FC = () => {
                     >
                         <Text style={styles.buttonText}>Atualizar Senha</Text>
                     </TouchableOpacity>
-                </View>
+                </View> */}
 
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>Zona de Perigo</Text>
@@ -246,6 +295,18 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "#333",
         marginBottom: 15,
+    },
+    sectionText: {
+        fontSize: 16,
+        fontWeight: "bold",
+        color: "#161616ff",
+        marginBottom: 5,
+    },
+    sectionData: {
+        fontSize: 16,
+        fontWeight: "normal",
+        color: "#000000ff",
+        marginBottom: 5,
     },
     label: {
         fontSize: 14,
