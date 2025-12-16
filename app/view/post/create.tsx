@@ -216,7 +216,7 @@ export default function CreatePost() {
 
                     <TouchableOpacity
                         style={styles.cancelButton}
-                        onPress={() => router.back()}
+                        onPress={() => router.replace("/view/Home")}
                         disabled={loading}
                     >
                         <Text style={styles.cancelButtonText}>Cancelar</Text>

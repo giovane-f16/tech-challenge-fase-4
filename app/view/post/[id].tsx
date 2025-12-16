@@ -76,7 +76,7 @@ export default function PostDetails() {
                 </Text>
                 <TouchableOpacity
                     style={styles.retryButton}
-                    onPress={() => router.back()}
+                    onPress={() => router.replace("/view/Home")}
                 >
                     <Text style={styles.retryButtonText}>Voltar</Text>
                 </TouchableOpacity>
