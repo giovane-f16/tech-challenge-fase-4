@@ -60,7 +60,7 @@ const CreateAlunoScreen: React.FC = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }
 
     useFocusEffect(
         useCallback(() => {
@@ -142,7 +142,7 @@ const CreateAlunoScreen: React.FC = () => {
             </ScrollView>
         </KeyboardAvoidingView>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {

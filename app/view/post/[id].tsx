@@ -49,7 +49,7 @@ export default function PostDetails() {
         } finally {
             setLoading(false);
         }
-    };
+    }
 
     useEffect(() => {
         loadPost();

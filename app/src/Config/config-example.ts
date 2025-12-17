@@ -19,7 +19,7 @@ export class Config {
             storageBucket: "",
             messagingSenderId: "",
             appId: ""
-        };
+        }
     }
 
     static getSuperAdminEmail(): string {

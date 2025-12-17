@@ -46,7 +46,7 @@ export const getProfessores = async (): Promise<UserApp[]> => {
     professors.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
     return professors;
-};
+}
 
 export const deleteProfessor = async (docId: string): Promise<void> => {
     const ref = doc(db, COLLECTION, docId);
@@ -55,7 +55,7 @@ export const deleteProfessor = async (docId: string): Promise<void> => {
         throw new Error("Professor não encontrado");
     }
     await deleteDoc(ref);
-};
+}
 
 export const getAlunos = async (): Promise<UserApp[]> => {
     const currentEmail = auth.currentUser?.email || null;
@@ -80,7 +80,7 @@ export const getAlunos = async (): Promise<UserApp[]> => {
     });
 
     return alunos;
-};
+}
 
 export const deleteAluno = async (docId: string): Promise<void> => {
     const ref = doc(db, COLLECTION, docId);
@@ -89,6 +89,6 @@ export const deleteAluno = async (docId: string): Promise<void> => {
         throw new Error("Aluno não encontrado");
     }
     await deleteDoc(ref);
-};
+}
 
-export default { getProfessores, deleteProfessor, getAlunos, deleteAluno };
+export default { getProfessores, deleteProfessor, getAlunos, deleteAluno }

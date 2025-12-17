@@ -29,7 +29,7 @@ const deleteButton = ({ postId, onDelete }: DeleteButtonProps) => {
                 }
             ]
         );
-    };
+    }
 
     const handleDelete = async () => {
         try {
@@ -43,7 +43,7 @@ const deleteButton = ({ postId, onDelete }: DeleteButtonProps) => {
             Alert.alert("Erro", "Falha ao excluir o post. Tente novamente.");
             console.error(error);
         }
-    };
+    }
 
     return (
         <TouchableOpacity

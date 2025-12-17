@@ -76,10 +76,10 @@ export default function Edit() {
                 }
             }
 
-            const base64WithPrefix = `data:${contentType};base64,${result.assets[0].base64}`;
+            const base64WithPrefix = `data:${contentType}base64,${result.assets[0].base64}`;
             setFormData({ ...formData, thumbnail: base64WithPrefix });
         }
-    };
+    }
 
     const handleSubmit = async () => {
         if (!formData.titulo.trim()) {
@@ -119,7 +119,7 @@ export default function Edit() {
         } finally {
             setLoading(false);
         }
-    };
+    }
 
     const confirmDelete = () => {
         Alert.alert(
@@ -137,7 +137,7 @@ export default function Edit() {
                 }
             ]
         );
-    };
+    }
 
     const handleDelete = async () => {
         try {
@@ -148,7 +148,7 @@ export default function Edit() {
             Alert.alert("Erro", "Falha ao excluir o post. Tente novamente.");
             console.error(error);
         }
-    };
+    }
 
     return (
         <KeyboardAvoidingView

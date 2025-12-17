@@ -90,7 +90,7 @@ export class PostModel implements Post {
             thumbnail: this.thumbnail,
             thumbnail_id: this.thumbnail_id,
             data_atualizacao: this.data_atualizacao,
-        };
+        }
     }
 
     getConteudoResumido(lenght: number): string {

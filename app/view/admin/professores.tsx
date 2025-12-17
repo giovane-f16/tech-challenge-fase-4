@@ -32,11 +32,11 @@ const ProfessoresScreen: React.FC = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }
 
     const handleCreateProfessor = () => {
         router.push("/view/admin/create-professor");
-    };
+    }
 
     const handleEditProfessor = (professor: Professor) => {
         router.push({
@@ -47,7 +47,7 @@ const ProfessoresScreen: React.FC = () => {
                 name: professor.name,
             },
         });
-    };
+    }
 
     const renderProfessor = ({ item }: { item: Professor }) => (
         <TouchableOpacity
@@ -97,7 +97,7 @@ const ProfessoresScreen: React.FC = () => {
             />
         </View>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {

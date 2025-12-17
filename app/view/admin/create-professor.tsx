@@ -60,7 +60,7 @@ const CreateProfessorScreen: React.FC = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }
 
     useFocusEffect(
         useCallback(() => {
@@ -142,7 +142,7 @@ const CreateProfessorScreen: React.FC = () => {
             </ScrollView>
         </KeyboardAvoidingView>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {

@@ -186,7 +186,7 @@ export class PostProvider {
             month: "short",
             year: "numeric",
         });
-    };
+    }
 }
 
 export default PostProvider;

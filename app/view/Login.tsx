@@ -35,7 +35,7 @@ const LoginScreen: React.FC = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }
 
     return (
         <View style={styles.container}>
@@ -117,7 +117,7 @@ const LoginScreen: React.FC = () => {
             </TouchableOpacity>
         </View>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {

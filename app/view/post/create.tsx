@@ -52,10 +52,10 @@ export default function CreatePost() {
                 }
             }
 
-            const base64WithPrefix = `data:${contentType};base64,${result.assets[0].base64}`;
+            const base64WithPrefix = `data:${contentType}base64,${result.assets[0].base64}`;
             setFormData({ ...formData, thumbnail: base64WithPrefix });
         }
-    };
+    }
 
     const handleSubmit = async () => {
         if (!formData.titulo.trim()) {
@@ -102,7 +102,7 @@ export default function CreatePost() {
             setImageUri(null);
             setLoading(false);
         }
-    };
+    }
 
     return (
         <KeyboardAvoidingView

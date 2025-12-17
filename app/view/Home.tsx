@@ -30,7 +30,7 @@ export default function Home() {
             setLoading(false);
             setRefreshing(false);
         }
-    };
+    }
 
     useEffect(() => {
         getUserData().then(setUser);
@@ -54,7 +54,7 @@ export default function Home() {
     const onRefresh = () => {
         setRefreshing(true);
         loadPosts();
-    };
+    }
 
     const renderPostItem = ({ item }: { item: PostModel }) => (
         <TouchableOpacity

@@ -123,7 +123,7 @@ const EditProfessorScreen: React.FC = () => {
             </ScrollView>
         </KeyboardAvoidingView>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {

@@ -25,7 +25,7 @@ const Perfil: React.FC = () => {
         setName(data.name);
         setId(data.id);
         setUserType(data.userType);
-    };
+    }
 
     useEffect(() => {
         fetchUserData();
@@ -112,7 +112,7 @@ const Perfil: React.FC = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }
 
     const handleDelete = () => {
         Alert.alert(
@@ -127,7 +127,7 @@ const Perfil: React.FC = () => {
                 },
             ]
         );
-    };
+    }
 
     const confirmDelete = async () => {
         setLoading(true);
@@ -145,7 +145,7 @@ const Perfil: React.FC = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }
 
     return (
         <KeyboardAvoidingView
@@ -254,7 +254,7 @@ const Perfil: React.FC = () => {
             </ScrollView>
         </KeyboardAvoidingView>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {

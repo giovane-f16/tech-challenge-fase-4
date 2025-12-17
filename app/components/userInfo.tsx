@@ -36,7 +36,7 @@ const UserInfo: React.FC = () => {
                 setUserName(user.email.split("@")[0]);
             }
         }
-    };
+    }
 
     const handleLogout = () => {
         Alert.alert(
@@ -61,7 +61,7 @@ const UserInfo: React.FC = () => {
                 },
             ]
         );
-    };
+    }
 
     return (
         <View style={styles.container}>
@@ -71,7 +71,7 @@ const UserInfo: React.FC = () => {
             </TouchableOpacity>
         </View>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {

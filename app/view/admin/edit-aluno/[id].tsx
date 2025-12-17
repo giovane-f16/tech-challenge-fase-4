@@ -22,7 +22,7 @@ const EditAlunoScreen: React.FC = () => {
                 },
             ]
         );
-    };
+    }
 
     const confirmDelete = async () => {
         setLoading(true);
@@ -40,7 +40,7 @@ const EditAlunoScreen: React.FC = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }
 
     const handleUpdateName = async () => {
         if (!nameAtualizado.trim()) {
@@ -124,7 +124,7 @@ const EditAlunoScreen: React.FC = () => {
             </ScrollView>
         </KeyboardAvoidingView>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {
