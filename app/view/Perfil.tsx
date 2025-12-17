@@ -1,4 +1,4 @@
-import { getUserData, updateNameAccount, updateUserEmail, updateUserPassword } from "@/app/src/Services/auth";
+import { getUserData, updateNameAccount, updateUserPassword } from "@/app/src/Services/auth";
 import { deleteProfessor } from "@/app/src/Services/user";
 import { router, useFocusEffect } from "expo-router";
 import React, { useCallback, useEffect, useState } from "react";
@@ -8,11 +8,11 @@ const Perfil: React.FC = () => {
     const [email, setEmail]                     = useState("");
     const [name, setName]                       = useState("");
     const [id, setId]                           = useState("");
-    const [emailAtualizado, setEmailAtualizado] = useState("");
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword]         = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [nameAtualizado, setNameAtualizado]   = useState("");
+    const [userType, setUserType]               = useState("");
     const [loading, setLoading]                 = useState(false);
 
     const fetchUserData = async () => {
@@ -24,6 +24,7 @@ const Perfil: React.FC = () => {
         setEmail(data.email);
         setName(data.name);
         setId(data.id);
+        setUserType(data.userType);
     };
 
     useEffect(() => {
@@ -47,7 +48,19 @@ const Perfil: React.FC = () => {
             Alert.alert("Sucesso", "Nome atualizado com sucesso!", [
                 {
                     text: "OK",
-                    onPress: () => router.replace("/view/admin/alunos"),
+                    onPress: () => {
+                        if (userType === "professor") {
+                            router.replace("/view/admin/professores");
+                            return;
+                        }
+
+                        if (userType === "aluno") {
+                            router.replace("/view/admin/alunos");
+                            return;
+                        }
+
+                        router.replace("/view/Home");
+                    },
                 },
             ]);
             setNameAtualizado("");
@@ -55,35 +68,6 @@ const Perfil: React.FC = () => {
             Alert.alert("Erro", "Erro ao atualizar nome");
         }
     }
-
-    const handleUpdateEmail = async () => {
-        if (!email.trim() || !currentPassword.trim()) {
-            Alert.alert("Erro", "Preencha o email e a senha atual");
-            return;
-        }
-
-        setLoading(true);
-
-        try {
-            await updateUserEmail(email, currentPassword);
-            Alert.alert("Sucesso", "Email atualizado com sucesso!");
-            setCurrentPassword("");
-        } catch (error: any) {
-            let errorMessage = "Erro ao atualizar email";
-
-            if (error.code === "auth/wrong-password") {
-                errorMessage = "Senha atual incorreta";
-            } else if (error.code === "auth/email-already-in-use") {
-                errorMessage = "Este email já está em uso";
-            } else if (error.code === "auth/invalid-email") {
-                errorMessage = "Email inválido";
-            }
-
-            Alert.alert("Erro", errorMessage);
-        } finally {
-            setLoading(false);
-        }
-    };
 
     const handleUpdatePassword = async () => {
         if (!currentPassword.trim() || !newPassword.trim() || !confirmPassword.trim()) {
@@ -179,6 +163,10 @@ const Perfil: React.FC = () => {
                         Email:
                         <Text style={styles.sectionData}> {email}</Text>
                     </Text>
+                    <Text style={styles.sectionText}>
+                        Tipo:
+                        <Text style={styles.sectionData}> {userType}</Text>
+                    </Text>
                 </View>
 
                 <View style={styles.section}>
@@ -197,38 +185,6 @@ const Perfil: React.FC = () => {
                         disabled={loading}
                     >
                         <Text style={styles.buttonText}>Atualizar Nome</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Alterar Email</Text>
-                    <Text style={styles.label}>Novo Email</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="email@exemplo.com"
-                        value={emailAtualizado}
-                        onChangeText={setEmailAtualizado}
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                        editable={!loading}
-                    />
-
-                    <Text style={styles.label}>Senha Atual</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Digite sua senha"
-                        value={currentPassword}
-                        onChangeText={setCurrentPassword}
-                        secureTextEntry
-                        editable={!loading}
-                    />
-
-                    <TouchableOpacity
-                        style={[styles.button, loading && styles.buttonDisabled]}
-                        onPress={handleUpdateEmail}
-                        disabled={loading}
-                    >
-                        <Text style={styles.buttonText}>Atualizar Email</Text>
                     </TouchableOpacity>
                 </View>
 
