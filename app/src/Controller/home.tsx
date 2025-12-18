@@ -1,4 +1,4 @@
-import { PostModel } from "@/app/src/Model/post";
+import { PostModel } from "@/app/src/model/post";
 import { PostProvider } from "@/app/src/Provider/post";
 
 export class HomeController {

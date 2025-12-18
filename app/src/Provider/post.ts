@@ -1,5 +1,5 @@
 import { Config } from "@/app/src/Config/config";
-import { Post, PostCreateOrUpdate, PostModel } from "@/app/src/Model/post";
+import { Post, PostCreateOrUpdate, PostModel } from "@/app/src/model/post";
 
 export class PostProvider {
     private baseURL: string = Config.getApiEndpoint();
