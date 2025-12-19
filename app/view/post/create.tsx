@@ -52,7 +52,7 @@ export default function CreatePost() {
                 }
             }
 
-            const base64WithPrefix = `data:${contentType}base64,${result.assets[0].base64}`;
+            const base64WithPrefix = `data:${contentType};base64,${result.assets[0].base64}`;
             setFormData({ ...formData, thumbnail: base64WithPrefix });
         }
     }
