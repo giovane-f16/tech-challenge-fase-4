@@ -1,5 +1,5 @@
 import { updateNameAccount } from "@/app/src/Services/auth";
-import { deleteProfessor } from "@/app/src/Services/user";
+import { deleteAccount } from "@/app/src/Services/user";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
@@ -27,7 +27,7 @@ const EditProfessorScreen: React.FC = () => {
     const confirmDelete = async () => {
         setLoading(true);
         try {
-            await deleteProfessor(id);
+            await deleteAccount(id);
 
             Alert.alert("Sucesso", "Professor excluído com sucesso!", [
                 {

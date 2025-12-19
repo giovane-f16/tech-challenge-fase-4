@@ -1,5 +1,5 @@
 import { updateNameAccount } from "@/app/src/Services/auth";
-import { deleteAluno } from "@/app/src/Services/user";
+import { deleteAccount } from "@/app/src/Services/user";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
@@ -27,7 +27,7 @@ const EditAlunoScreen: React.FC = () => {
     const confirmDelete = async () => {
         setLoading(true);
         try {
-            await deleteAluno(id);
+            await deleteAccount(id);
 
             Alert.alert("Sucesso", "Aluno excluído com sucesso!", [
                 {

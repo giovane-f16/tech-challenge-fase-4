@@ -48,11 +48,11 @@ export const getProfessores = async (): Promise<UserApp[]> => {
     return professors;
 }
 
-export const deleteProfessor = async (docId: string): Promise<void> => {
+export const deleteAccount = async (docId: string): Promise<void> => {
     const ref = doc(db, COLLECTION, docId);
     const snap = await getDoc(ref);
     if (!snap.exists()) {
-        throw new Error("Professor não encontrado");
+        throw new Error("Conta não encontrada");
     }
     await deleteDoc(ref);
 }
@@ -82,13 +82,4 @@ export const getAlunos = async (): Promise<UserApp[]> => {
     return alunos;
 }
 
-export const deleteAluno = async (docId: string): Promise<void> => {
-    const ref = doc(db, COLLECTION, docId);
-    const snap = await getDoc(ref);
-    if (!snap.exists()) {
-        throw new Error("Aluno não encontrado");
-    }
-    await deleteDoc(ref);
-}
-
-export default { getProfessores, deleteProfessor, getAlunos, deleteAluno }
+export default { getProfessores, getAlunos, deleteAccount }

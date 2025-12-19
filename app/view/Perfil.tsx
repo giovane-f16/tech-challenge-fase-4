@@ -1,5 +1,5 @@
 import { getUserData, updateNameAccount, updateUserPassword } from "@/app/src/Services/auth";
-import { deleteProfessor } from "@/app/src/Services/user";
+import { deleteAccount } from "@/app/src/Services/user";
 import { router, useFocusEffect } from "expo-router";
 import React, { useCallback, useEffect, useState } from "react";
 import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
@@ -116,8 +116,8 @@ const Perfil: React.FC = () => {
 
     const handleDelete = () => {
         Alert.alert(
-            "Excluir Professor",
-            "Tem certeza que deseja excluir este professor? Esta ação não pode ser desfeita.",
+            "Excluir conta",
+            "Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.",
             [
                 { text: "Cancelar", style: "cancel" },
                 {
@@ -132,16 +132,15 @@ const Perfil: React.FC = () => {
     const confirmDelete = async () => {
         setLoading(true);
         try {
-            await deleteProfessor(id);
-
-            Alert.alert("Sucesso", "Professor excluído com sucesso!", [
+            await deleteAccount(id);
+            Alert.alert("Sucesso", "Conta excluída com sucesso! Faça login novamente.", [
                 {
                     text: "OK",
-                    onPress: () => router.replace("/view/admin/professores"),
+                    onPress: () => router.back(),
                 },
             ]);
         } catch (error: any) {
-            Alert.alert("Erro", error.message || "Erro ao excluir professor");
+            Alert.alert("Erro", error.message || "Erro ao excluir conta");
         } finally {
             setLoading(false);
         }

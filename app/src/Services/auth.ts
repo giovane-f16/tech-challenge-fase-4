@@ -1,6 +1,6 @@
 import { Config } from "@/app/src/Config/config";
 import { auth, db } from "@/app/src/Config/firebase";
-import { createUserWithEmailAndPassword, deleteUser, EmailAuthProvider, reauthenticateWithCredential, signInWithEmailAndPassword, signOut, updatePassword, User } from "firebase/auth";
+import { createUserWithEmailAndPassword, EmailAuthProvider, reauthenticateWithCredential, signInWithEmailAndPassword, signOut, updatePassword, User } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 
 export const loginUser = async (email: string, password: string, userType: "professor" | "aluno"): Promise<User> => {
@@ -65,17 +65,6 @@ export const updateNameAccount = async ( uid: string, newName: string): Promise<
     await setDoc(userDocRef, { name: newName }, { merge: true });
 }
 
-export const deleteUserAccount = async (currentPassword: string): Promise<void> => {
-    const user = auth.currentUser;
-    if (!user || !user.email) throw new Error("Usuário não autenticado");
-
-    // Reautentica o usuário antes de deletar
-    const credential = EmailAuthProvider.credential(user.email, currentPassword);
-    await reauthenticateWithCredential(user, credential);
-
-    await deleteUser(user);
-}
-
 export const getUserData = async (): Promise<{ name: string; email: string; userType: string; id: string } | null> => {
     const current = getCurrentUser();
     if (!current || !current.uid) {
@@ -96,4 +85,4 @@ export const getUserData = async (): Promise<{ name: string; email: string; user
     }
 }
 
-export default { loginUser, registerUser, logoutUser, getCurrentUser, isSuperAdmin, updateUserPassword, deleteUserAccount, getUserData }
+export default { loginUser, registerUser, logoutUser, getCurrentUser, isSuperAdmin, updateUserPassword, getUserData }
