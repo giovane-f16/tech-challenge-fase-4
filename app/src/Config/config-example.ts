@@ -7,10 +7,6 @@ export class Config {
         return "";
     }
 
-    static getMongoDbUri(): string {
-        return "";
-    }
-
     static getFirebaseConfig(): object {
         return {
             apiKey: "",

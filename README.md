@@ -10,15 +10,11 @@ A aplicação utiliza o projeto [Tech Challenge Fase 2](https://github.com/giova
 
 > https://nodejs.org/pt
 
-2. Instancia do MongoDB Atlas
-
-> https://www.mongodb.com/products/platform/atlas-database
-
-3. JWT Token
+2. JWT Token
 
 > https://www.jwt.io/
 
-4. Projeto no Firebase
+3. Projeto no Firebase
 
 > https://console.firebase.google.com/
 
