@@ -82,12 +82,17 @@ const LoginScreen: React.FC = () => {
                 />
                 <Text style={{ marginLeft: 2 }}>Aluno</Text>
 
-                <Checkbox
-                    status={userType === "professor" ? "checked" : "unchecked"}
-                    onPress={() => setUserType("professor")}
-                    color="#007AFF"
-                />
-                <Text style={{ marginLeft: 2 }}>Professor</Text>
+                {isLogin  && (
+                    <>
+                        <Checkbox
+                            status={userType === "professor" ? "checked" : "unchecked"}
+                            onPress={() => setUserType("professor")}
+                            color="#007AFF"
+                        />
+                        <Text style={{ marginLeft: 2 }}>Professor</Text>
+                    </>
+                )}
+
             </View>
 
             <TouchableOpacity
